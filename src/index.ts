@@ -275,7 +275,7 @@ export default class Collection<I extends IObject = IObject> {
     join(key: string | ((item: I, index: number, arr: I[]) => any)): string;
     join(key: string, glue: string, union?: string): string;
     join(key: string, ...props: any[]) {
-        const [glue = ",", union = ","] = props
+        const [ glue = ",", union = glue] = props
         return this.items.map(
             typeof key === "string" ? item => get(item, key) : key
         ).reduce((str, value, _index, arr)=>
@@ -572,7 +572,7 @@ export default class Collection<I extends IObject = IObject> {
 
     /**
      * @description
-     * The forget method removes an item from the collection by its key:
+     * The forget method removes a specific fields from each element in the collection.
      * @example
      * const collection = new Collection({
      *   name: 'Arcaelas Insiders',
@@ -704,7 +704,7 @@ export default class Collection<I extends IObject = IObject> {
 
     /**
      * @description
-     * The forget method removes an item from the collection by its key:
+     * Wrap element in X number of items and return specific page.
      * @example
      * collection.paginate(1, 20);
      * 
@@ -861,7 +861,7 @@ export default class Collection<I extends IObject = IObject> {
 
     /**
      * @description Filter the elements of the collection using Functions and Queries, some of the examples could be:
-     * @description NOTE: It is important to use double "$" ($$) to refer to a property based query.
+     * @description NOTE: It is important to use "$" to refer to a property based query.
      * @example
      * collection.find(item=>{
      *  return item.age >= 18;
