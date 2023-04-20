@@ -59,79 +59,81 @@ collection.all() // Expected: [ {...}, ... ]
 collection.collect([...]) // Expected: Collection
 ```
 
-### macro
-> Adding custom methods for current collection.
-```typescript
-collection.macro("getName", (item)=>{
-	return item.name
-}) // Expected: Collection
-
-collection.getName() // Expected: [ Joe, Julia, ... ]
-
-```
-
-### macro (static)
-> Adding custom method for all Collections
-```typescript
-Collection.macro("get", (item, key)=>{...})
-
-const pictures = new Collection([...])
-
-pictures.get("url") // Expected: [...]
-```
-
-### concat
-> Return a collection with added items, without mutate items.
-```typescript
-collection.concat({...})
-// or
-collection.concat([...])
-```
-
-### join
-> Returns a string with the values of the specified key in each object.
-```typescript
-
-collection.join("email")
-// dany@email.com,julia@email.com,rose@email.com
-
-collection.join("folders", "-")
-// dany@email.com-julia@email.com-rose@email.com
-
-collection.join("email", ", ", " and ")
-// dany@email.com, julia@email.com and rose@email.com
-```
-
-### sort
-> The sort method sorts the collection.
-```typescript
-collection.sort((a, b)=> a.age > b.age ? 1 : -1)
-// or
-collection.sort("age", "desc")
-```
-
-### map
-> Read [Array.prototype.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-
-### pop
-> Read [Array.prototype.pop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
-
-### slice
-> Read [Array.prototype.slice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
-
-### splice
-> Read [Array.prototype.splice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
-
-### shift
-> Read [Array.prototype.shift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
-
-### unshift
->  Read [Array.prototype.unshift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
-
 ### count
 > Count items length into collection.
 ```typescript
 collection.count() // 0 - Infinity
+```
+
+### find
+> Filter the elements of the collection using Functions and Queries, some of the examples could be:
+> **NOTE:** It is important to use "$" to refer to a property based query.
+```typescript
+collection.find(item=>{
+	return item.age >= 18;
+});
+// or
+collection.find({
+	age:{ $gte: 18 }
+});
+collection.find({
+	name: /Alejandro/,
+	skills:{
+		$contains: "Liberty"
+	},
+	gender:{
+		$not:{
+			$in: ['animal','fruit'],
+		}
+	},
+	work:{
+		$not:{
+			$in: ["work", "without", "coffe"]
+		}
+	}
+});
+```
+
+### first
+> Use **find()** and get first element
+```typescript
+users.first({
+	_id: "...",
+	age:{ $gte: 18 },
+	role:{
+		$not:{
+			$in:["admin"]
+		}
+	}
+})
+```
+
+### not
+> Is opposite of **find()**
+```typescript
+users.find({
+	$not:{ online: false }
+})
+users.find({
+	online: { $not: false }
+})
+user.not({
+	online: false
+})
+```
+
+### where
+> Use this shorthand to filter items
+```typescript
+const offline = users.where("online", false)
+const online = users.where("online", "==", false)
+```
+
+### whereNot
+> Is opposite of **where()**
+```typescript
+const offline = users.whereNot("online", true)
+const online = users.whereNot("online", "==", true)
 ```
 
 ### dd
@@ -232,82 +234,76 @@ const removed = trash.unique((item)=>{
 })
 ```
 
-### find
-> Filter the elements of the collection using Functions and Queries, some of the examples could be:
-> **NOTE:** It is important to use "$" to refer to a property based query.
+### macro
+> Adding custom methods for current collection.
 ```typescript
-collection.find(item=>{
-	return item.age >= 18;
-});
+collection.macro("getName", (item)=>{
+	return item.name
+}) // Expected: Collection
+
+collection.getName() // Expected: [ Joe, Julia, ... ]
+
+```
+
+### macro (static)
+> Adding custom method for all Collections
+```typescript
+Collection.macro("get", (item, key)=>{...})
+
+const pictures = new Collection([...])
+
+pictures.get("url") // Expected: [...]
+```
+
+
+### join
+> Returns a string with the values of the specified key in each object.
+```typescript
+
+collection.join("email")
+// dany@email.com,julia@email.com,rose@email.com
+
+collection.join("folders", "-")
+// dany@email.com-julia@email.com-rose@email.com
+
+collection.join("email", ", ", " and ")
+// dany@email.com, julia@email.com and rose@email.com
+```
+
+
+### sort
+> The sort method sorts the collection.
+```typescript
+collection.sort((a, b)=> a.age > b.age ? 1 : -1)
 // or
-collection.find({
-	age:{ $gte: 18 }
-});
-collection.find({
-	name: /Alejandro/,
-	skills:{
-		$contains: "Liberty"
-	},
-	gender:{
-		$not:{
-			$in: ['animal','fruit'],
-		}
-	},
-	work:{
-		$not:{
-			$in: ["work", "without", "coffe"]
-		}
-	}
-});
+collection.sort("age", "desc")
 ```
 
-### first
-> Use **find()** and get first element
-```typescript
-users.first({
-	_id: "...",
-	age:{ $gte: 18 },
-	role:{
-		$not:{
-			$in:["admin"]
-		}
-	}
-})
-```
+### concat
+> Read [Array.prototype.concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)
 
-### not
-> Is opposite of **find()**
-```typescript
-users.find({
-	$not:{ online: false }
-})
-users.find({
-	online: { $not: false }
-})
-user.not({
-	online: false
-})
-```
+### map
+> Read [Array.prototype.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 
-### where
-> Use this shorthand to filter items
-```typescript
-const offline = users.where("online", false)
-const online = users.where("online", "==", false)
-```
+### pop
+> Read [Array.prototype.pop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
 
-### whereNot
-> Is opposite of **where()**
-```typescript
-const offline = users.whereNot("online", true)
-const online = users.whereNot("online", "==", true)
-```
+### slice
+> Read [Array.prototype.slice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
+
+### splice
+> Read [Array.prototype.splice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
+
+### shift
+> Read [Array.prototype.shift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
+
+### unshift
+>  Read [Array.prototype.unshift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
 
 <hr/>
 <div  style="text-align:center;margin-top:50px;">
 	<p  align="center">
 		<img  src="https://raw.githubusercontent.com/arcaelas/dist/main/logo/svg/64.svg"  height="32px">
 	<p>
-
 ¿Want to discuss any of my open source projects, or something else?Send me a direct message on [Twitter](https://twitter.com/arcaelas).</br> If you already use these libraries and want to support us to continue development, you can sponsor us at [Github Sponsors](https://github.com/sponsors/arcaelas).
 </div>
