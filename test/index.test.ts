@@ -325,8 +325,6 @@ let collection: Collection<typeof items extends [infer T] ? T : IObject>
 
 beforeAll(() => {
     collection = new Collection<typeof items extends [infer T, ...any] ? T : IObject>(items as [])
-    collection.find({
-    })
 })
 
 test("Collection created!", () => {

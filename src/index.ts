@@ -165,9 +165,9 @@ export class QueryConstructor {
 /**
  * @description This method build a Query Array to filter elements
  */
-function make_query(query: Query, ref: string = "", arr: any[] = []) {
+function make_query(query: any, ref: string = "", arr: any[] = []) {
     for (const key in query) {
-        let value = query[key] as any,
+        let value = query[key],
             path = (ref && ref + "/") + key
         if (value instanceof RegExp) value = { $exp: value }
         if (value instanceof Date) value = value.toISOString()

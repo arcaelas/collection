@@ -23,11 +23,6 @@
     "url": "https://github.com/arcaelas/collection/issues"
   },
   "main": "./lib/index.js",
-  "exports": {
-    "default": "./lib/index.js",
-    "require": "./lib/index.cjs",
-    "import": "./lib/index.js"
-  },
   "files": [
     "lib/",
     "*.md",
@@ -42,10 +37,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "test": "jest",
+    "test": "yarn build && jest",
     "build": "tsc && ts-node esbuild.js",
-    "commit": "npm run test && npm publish --access=public",
-    "prepublishOnly": "npm run build && npm version minor",
+    "commit": "npm publish --access=public",
+    "prepublishOnly": "yarn test && npm version patch",
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
@@ -59,7 +54,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@arcaelas/utils": "^1.43.0",
+    "@arcaelas/utils": "^1.45.4",
     "lodash": "^4.17.21"
   }
 }
