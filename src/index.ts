@@ -19,12 +19,12 @@ interface Query {
     [K: string]: Inmutables | Query | RegExp | {
         [K in keyof QueryConstructor as QueryConstructor[K] extends Noop ? (
             K extends "validate" ? never : K
-        ) : never]: Parameters<QueryConstructor[K]> extends [ any, infer V ] ? V : never
+        ) : never]: Parameters<QueryConstructor[K]> extends [any, infer V] ? V : never
     }
 }
 
 export interface QueryConstructor {
-    new (query: any, ref?: string): void
+    new(query: any, ref?: string): void
 
     /**
      * @description
@@ -95,12 +95,12 @@ export interface QueryConstructor {
 export class QueryConstructor {
     private filters: Noop[] = []
 
-    constructor(query: Query, ref: string = ""){
+    constructor(query: Query, ref: string = "") {
         make_query(query, ref, this.filters)
     }
 
     validate(item: IObject): boolean {
-        return this.filters.every(fn=> fn instanceof QueryConstructor ? fn.validate(item) : fn(item))
+        return this.filters.every(fn => fn instanceof QueryConstructor ? fn.validate(item) : fn(item))
     }
 
     static $eq(ref: string, value: Inmutables) {
@@ -159,7 +159,7 @@ export class QueryConstructor {
             return arr instanceof Array && arr.includes(value)
         }
     }
-    
+
 }
 
 /**
@@ -198,7 +198,7 @@ export default class Collection<I extends IObject = IObject> {
      * ])
      */
     constructor(items: Collection | I | I[] = []) {
-        this.items = items instanceof Collection ? items.all() : [].concat( items ).map( clone )
+        this.items = items instanceof Collection ? items.all() as I[] : [].concat(items as any).map(clone) as I[]
     }
 
     /**
@@ -224,7 +224,7 @@ export default class Collection<I extends IObject = IObject> {
      * collection.some(item=> item.id);
      */
     macro(key: string, value: Function): this {
-        return Collection.macro.call(this, key, value)
+        return Collection.macro.call(this, key, value) as any
     }
 
     /**
@@ -275,12 +275,12 @@ export default class Collection<I extends IObject = IObject> {
     join(key: string | ((item: I, index: number, arr: I[]) => any)): string;
     join(key: string, glue: string, union?: string): string;
     join(key: string, ...props: any[]) {
-        const [ glue = ",", union = glue] = props
+        const [glue = ",", union = glue] = props
         return this.items.map(
             typeof key === "string" ? item => get(item, key) : key
-        ).reduce((str, value, _index, arr)=>
-            str+(_index? (_index===arr.length-1?`${glue} `:` ${union} `) :"")+value
-        , "")
+        ).reduce((str, value, _index, arr) =>
+            str + (_index ? (_index === arr.length - 1 ? `${glue} ` : ` ${union} `) : "") + value
+            , "")
     }
 
     /**
@@ -317,7 +317,7 @@ export default class Collection<I extends IObject = IObject> {
      * @param initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an collection value.
      */
     reduce<H extends ((current?: C, item?: I, index?: number) => any), C extends any>(callbackfn: H, initialValue: C): C {
-        return this.items.reduce(callbackfn, initialValue);
+        return this.items.reduce(callbackfn, initialValue) as C;
     }
 
     /**
@@ -778,10 +778,8 @@ export default class Collection<I extends IObject = IObject> {
      *     return item.timestamp > Date.now(); // Last item
      * });
      */
-    last(query: Query): I | null
-    last(iterator?: (item: I, index: number, arr: I[]) => boolean): I | null
-    last(handler) {
-        if (typeof handler === "function") return this.items.reverse().find(handler)
+    last<H extends Query | Noop<[item: I, index: number, arr: I[]], boolean>>(handler: H): I | null {
+        if (typeof handler === "function") return this.items.findLast(handler as any) ?? null
         else if (typeof handler === "object") {
             const items = this.find(handler).all()
             return items[items.length - 1] || null
