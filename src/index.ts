@@ -781,7 +781,7 @@ export default class Collection<I extends IObject = IObject> {
     last<H extends Query | Noop<[item: I, index: number, arr: I[]], boolean>>(handler: H): I | null {
         if (typeof handler === "function") return this.items.findLast(handler as any) ?? null
         else if (typeof handler === "object") {
-            const items = this.find(handler).all()
+            const items = this.find(handler as any).all()
             return items[items.length - 1] || null
         }
         return this.items[this.items.length - 1] || null
