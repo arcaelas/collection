@@ -1,4 +1,4 @@
-import { IObject } from "@arcaelas/utils"
+import type { IObject } from "@arcaelas/utils"
 import { Collection } from "../src"
 
 
@@ -321,59 +321,59 @@ const items = [
     }
 ]
 
-let collection: Collection<typeof items extends [ infer T ] ? T : IObject>
+let collection: Collection<typeof items extends [infer T] ? T : IObject>
 
-beforeAll(()=>{
-    collection = new Collection<typeof items extends [ infer T, ...any ] ? T : IObject>( items as [] )
+beforeAll(() => {
+    collection = new Collection<typeof items extends [infer T, ...any] ? T : IObject>(items as [])
     collection.find({
     })
 })
 
-test("Collection created!", ()=>{
-    expect( collection ).toBeInstanceOf( Collection )
+test("Collection created!", () => {
+    expect(collection).toBeInstanceOf(Collection)
 })
 
-test("join", ()=>{
-    expect( collection.join("name", ",", "and") )
+test("join", () => {
+    expect(collection.join("name", ",", "and"))
         .toMatch(/\w+,/g)
-    expect( collection.join("name", ",", "and") )
+    expect(collection.join("name", ",", "and"))
         .toMatch(/ and \w+/g)
 })
 
-test("map", ()=>{
-    expect( collection.map(item=> item.name).join(",") )
-        .toEqual( items.map(item=> item.name ).join(",") )
+test("map", () => {
+    expect(collection.map(item => item.name).join(","))
+        .toEqual(items.map(item => item.name).join(","))
 })
 
-test("pop", ()=>{
-    expect( collection.pop() )
-        .toEqual( items[ items.length - 1 ] )
+test("pop", () => {
+    expect(collection.pop())
+        .toEqual(items[items.length - 1])
 })
 
-test("first", ()=>{
-    expect( collection.first() ).toMatchObject( items[0] )
+test("first", () => {
+    expect(collection.first()).toMatchObject(items[0])
 })
 
-test("firstQuery", ()=>{
-    expect( collection.first({
+test("firstQuery", () => {
+    expect(collection.first({
         email: "greerfisher@zentime.com"
-    }) ).toMatchObject( items[1] )
+    })).toMatchObject(items[1])
 
-    expect( collection.first({
+    expect(collection.first({
         email: { $eq: "greerfisher@zentime.com" }
-    }) ).toMatchObject( items[1] )
+    })).toMatchObject(items[1])
 
-    expect( collection.first({
+    expect(collection.first({
         tags: { $includes: "proident" }
-    }) ).toMatchObject( items[1] )
+    })).toMatchObject(items[1])
 })
 
-test("notQuery", ()=>{
-    expect( collection.first({
+test("notQuery", () => {
+    expect(collection.first({
         email: { $not: "greerfisher@zentime.com" }
-    }) ).toMatchObject( items[0] )
+    })).toMatchObject(items[0])
 
-    expect( collection.first({
-        $not:{ email: { $not: "greerfisher@zentime.com" } }
-    }) ).toMatchObject( items[1] )
+    expect(collection.first({
+        $not: { email: { $not: "greerfisher@zentime.com" } }
+    })).toMatchObject(items[1])
 })
