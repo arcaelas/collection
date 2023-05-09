@@ -45,8 +45,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
-    "@types/lodash": "^4.14.178",
-    "@types/node": "^20.1.0",
+    "@types/lodash": "^4.14.194",
     "esbuild": "^0.17.18",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
@@ -54,7 +53,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@arcaelas/utils": "^1.45.4",
+    "@arcaelas/utils": "^1.45.9",
     "lodash": "^4.17.21"
   }
 }
