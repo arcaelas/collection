@@ -67,6 +67,7 @@ collection.count() // 0 - Infinity
 
 ### find
 > Filter the elements of the collection using Functions and Queries, some of the examples could be:
+
 > **NOTE:** It is important to use "$" to refer to a property based query.
 ```typescript
 collection.find(item=>{
@@ -301,9 +302,12 @@ collection.sort("age", "desc")
 >  Read [Array.prototype.unshift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
 
 <hr/>
+
 <div  style="text-align:center;margin-top:50px;">
 	<p  align="center">
 		<img  src="https://raw.githubusercontent.com/arcaelas/dist/main/logo/svg/64.svg"  height="32px">
 	<p>
+
 ¿Want to discuss any of my open source projects, or something else?Send me a direct message on [Twitter](https://twitter.com/arcaelas).</br> If you already use these libraries and want to support us to continue development, you can sponsor us at [Github Sponsors](https://github.com/sponsors/arcaelas).
+
 </div>
