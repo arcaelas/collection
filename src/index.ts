@@ -2,7 +2,7 @@ import { countBy, Dictionary, groupBy, omit, uniqBy } from 'lodash'
 import { type IObject, type Noop, get, has, clone, } from '@arcaelas/utils'
 
 
-enum alias {
+export enum alias {
     "=" = "$eq",
     "!=" = "$ne",
     ">" = "$gt",
@@ -12,10 +12,10 @@ enum alias {
     in = "$in",
     includes = "$includes",
 }
-type Operator = keyof typeof alias
-type IRegExp = { pattern: string, flags?: string }
-type Inmutables = string | number | bigint | boolean | null
-interface Query {
+export type Operator = keyof typeof alias
+export type IRegExp = { pattern: string, flags?: string }
+export type Inmutables = string | number | bigint | boolean | null
+export interface Query {
     [K: string]: Inmutables | Query | RegExp | {
         [K in keyof QueryConstructor as QueryConstructor[K] extends Noop ? (
             K extends "validate" ? never : K
@@ -165,7 +165,7 @@ export class QueryConstructor {
 /**
  * @description This method build a Query Array to filter elements
  */
-function make_query(query: any, ref: string = "", arr: any[] = []) {
+export function make_query(query: any, ref: string = "", arr: any[] = []) {
     for (const key in query) {
         let value = query[key],
             path = (ref && ref + "/") + key
