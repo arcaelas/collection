@@ -372,6 +372,6 @@ test("notQuery", () => {
     })).toMatchObject(items[0])
 
     expect(collection.first({
-        $not: { email: { $not: "greerfisher@zentime.com" } }
-    })).toMatchObject(items[1])
+        email: { $not: "greerfisher@zentime.com" }
+    })).toMatchObject(items[0])
 })
