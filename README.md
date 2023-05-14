@@ -113,9 +113,6 @@ users.first({
 > Is opposite of **find()**
 ```typescript
 users.find({
-	$not:{ online: false }
-})
-users.find({
 	online: { $not: false }
 })
 user.not({
