@@ -1,6 +1,6 @@
 {
   "license": "ISC",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "name": "@arcaelas/collection",
   "homepage": "https://github.com/arcaelas/collection#readme",
   "description": "Searching, filtering and mapping collections is the bread and butter for developers, that's why we offer you \"eloquent\".",
