@@ -6,7 +6,7 @@ const { build } = require("esbuild")
 build({
     entryPoints: readdirSync(join(__dirname, 'test'))
         .filter(name => name.match(/\.ts$/))
-        .map(name => join('src/test', name)),
+        .map(name => join('test', name)),
     outdir: "test",
     bundle: true,
     minify: true,
