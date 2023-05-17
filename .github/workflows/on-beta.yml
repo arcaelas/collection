@@ -1,0 +1,28 @@
+name: On Push | beta
+on:
+  push:
+    branches:
+      - beta
+jobs:
+  before:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - name: install
+        run: npm i -g yarn && yarn --frozen-lockfile
+      - name: jest
+        run: yarn jest
+      - name: github-config
+        run: |
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      - name: merge
+        run: |
+          pkg_version="$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
+          git fetch --unshallow
+          git merge --no-ff main -m "v$pkg_version"
+          git push
