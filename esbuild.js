@@ -8,7 +8,7 @@ build({
         .filter(name => name.match(/\.ts$/))
         .map(name => join('test', name)),
     outdir: "test",
-    bundle: false,
+    bundle: true,
     minify: true,
     platform: "node",
     format: "cjs",
