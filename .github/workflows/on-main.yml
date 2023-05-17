@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  before:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,6 +20,16 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+      - name: patch
+        run: |
+          pkg_name="$(sed 's/.*"name": "\(.*\)".*/\1/;t;d' ./package.json)"
+          pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
+          [[ $pkg_version != $(npm view $pkg_name version) ]] && {
+            pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
+            npm version patch
+            git commit -am "Release v$pkg_version"
+            git push
+          }
       - name: publish
         run: npm publish --access=public
         env:
