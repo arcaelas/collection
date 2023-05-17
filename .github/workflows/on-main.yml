@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   before:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -13,7 +13,9 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - name: install
-        run: npm i -g yarn && yarn --frozen-lockfile
+        run: |
+          npm i -g yarn
+          yarn --frozen-lockfile
       - name: github-config
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
