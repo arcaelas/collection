@@ -8,7 +8,7 @@ build({
         .filter(name => name.match(/\.ts$/))
         .map(name => join('test', name)),
     outdir: "test",
-    bundle: true,
+    bundle: false,
     minify: true,
     platform: "node",
     format: "cjs",
@@ -17,7 +17,7 @@ build({
 build({
     entryPoints: ['src/index.ts'],
     outdir: "build",
-    bundle: false,
+    bundle: true,
     minify: true,
     platform: "node",
     format: "cjs",
