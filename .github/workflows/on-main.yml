@@ -27,6 +27,7 @@ jobs:
           [[ $pkg_version == $(npm view $pkg_name version) ]] && {
             npm version patch
             pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
+            git add .
             git commit -am "Release v$pkg_version"
             git push
           }
