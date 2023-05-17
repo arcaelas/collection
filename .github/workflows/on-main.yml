@@ -20,17 +20,6 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-      - name: patch
-        run: |
-          pkg_name="$(sed 's/.*"name": "\(.*\)".*/\1/;t;d' ./package.json)"
-          pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
-          [[ $pkg_version == $(npm view $pkg_name version) ]] && {
-            npm version patch
-            pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
-            git add .
-            git commit -am "Release v$pkg_version"
-            git push origin main
-          }
       - name: publish
         run: npm publish --access=public
         env:
