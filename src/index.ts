@@ -32,9 +32,9 @@ export class QueryConstructor extends Function {
 
     private readonly filters: any[] = []
     constructor(query: Query, ref: string = "") {
-        super("item", "return this.filters.every(fn=> fn(item))")
+        super("item", "return this.filters.every(fn=>fn(item))")
         for (const key in query) {
-            let _ref = ref.concat('.', key),
+            let _ref = (ref && ref + '.') + key,
                 value = query[key] instanceof Date ? new Date(query[key] as string).toISOString() : query[key]
             if (value instanceof RegExp) {
                 const [, pattern, flags = ''] = String(value).match(/^(.*)?\/([a-z]+)?$/) || []
@@ -43,7 +43,7 @@ export class QueryConstructor extends Function {
             }
             if (typeof QueryConstructor[key] === 'function') {
                 this.filters.splice(0, this.filters.length)
-                this.filters.push(QueryConstructor[key](_ref, value))
+                this.filters.push(QueryConstructor[key](ref, value))
                 break
             }
             else if (typeof (value ?? false) === 'object')
@@ -51,6 +51,7 @@ export class QueryConstructor extends Function {
             else
                 this.filters.push(QueryConstructor.$eq(_ref, value as Inmutables))
         }
+        return this.bind(this)
     }
 
     /**
@@ -753,13 +754,15 @@ export default class Collection<I extends IObject = IObject> {
      * @example
      * collection.first() // {}
      */
+    first(): I | null
     first(query: Query): I | null
-    first(iterator?: (item: I, index: number, arr: I[]) => boolean): I | null
-    first(handler) {
-        const item = typeof handler === "function" ? this.items.find(handler) : (
-            typeof handler === "object" ? this.find(handler).all()?.[0] : this.items[0]
+    first(iterator: (item: I, index: number, arr: I[]) => boolean): I | null
+    first(handler?: any) {
+        return handler === undefined ? this.items[0] : (
+            typeof handler === 'function' ? this.items.find(handler) : (
+                typeof (handler ?? 0) === 'object' ? this.find(handler as Query).all().shift() : null
+            )
         )
-        return item || null
     }
 
     /**
@@ -770,14 +773,17 @@ export default class Collection<I extends IObject = IObject> {
      *     return item.timestamp > Date.now(); // Last item
      * });
      */
-    last<H extends Query | Noop<[item: I, index: number, arr: I[]], boolean>>(handler: H): I | null {
-        if (typeof handler === "function") return this.items.findLast(handler as any) ?? null
-        else if (typeof handler === "object") {
-            const items = this.find(handler as any).all()
-            return items[items.length - 1] || null
-        }
-        return this.items[this.items.length - 1] || null
+    last(): I | null
+    last(query: Query): I | null
+    last(iterator: (item: I, index: number, arr: I[]) => boolean): I | null
+    last(handler?: any) {
+        return handler === undefined ? this.items[this.items.length - 1] : (
+            typeof handler === 'function' ? this.items.findLast(handler) : (
+                typeof (handler ?? 0) === 'object' ? this.find(handler as Query).all().pop() : null
+            )
+        )
     }
+
 
     /**
      * @description The where method filters the collection by a given key / value pair:
@@ -880,11 +886,10 @@ export default class Collection<I extends IObject = IObject> {
      */
     find(query: Query): Collection<I>
     find(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
-    find(handler: any): Collection<I> {
-        const filter = typeof handler === 'function' ? handler : (
+    find(handler: any) {
+        return this.collect(this.items.filter(typeof handler === 'function' ? handler : (
             typeof (handler ?? 0) === 'object' ? new QueryConstructor(handler) : (() => false)
-        )
-        return this.collect(this.items.filter(filter))
+        )))
     }
 
     /**
@@ -921,10 +926,9 @@ export default class Collection<I extends IObject = IObject> {
     not(query: Query): Collection<I>
     not(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
     not(handler: any) {
-        const filter = typeof handler === 'function' ? handler : (
-            typeof (handler ?? 0) === 'object' ? new QueryConstructor(handler) : (() => false)
-        )
-        return this.collect(this.items.filter((item: any) => !filter(item)))
+        return this.collect(this.items.filter(typeof handler === 'function' ? handler : (
+            typeof (handler ?? 0) === 'object' ? new QueryConstructor({ $not: handler } as Query) : (() => false)
+        )))
     }
 }
 
