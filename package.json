@@ -57,7 +57,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@arcaelas/utils": "^1.45.12",
+    "@arcaelas/utils": "^1.45.16",
     "lodash": "^4.17.21"
   }
 }

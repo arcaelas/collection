@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@arcaelas/utils@^1.45.12":
-  version "1.45.12"
-  resolved "https://registry.yarnpkg.com/@arcaelas/utils/-/utils-1.45.12.tgz#bfb09da896dc5d4faf56903473cae9cca499d770"
-  integrity sha512-kvQumrwSuuLl3vG+4O2Kb2lkAV9T4wpkx3PgKRMwAORTUimXm1UJv6T5jIUywitlTEbkAYtWedjsqbV5ol+6+A==
+"@arcaelas/utils@^1.45.16":
+  version "1.45.16"
+  resolved "https://registry.yarnpkg.com/@arcaelas/utils/-/utils-1.45.16.tgz#152b17dadb2940b8d4101a1b8cfeb762233c173d"
+  integrity sha512-geZ0Tp6yW8F+UpfqyasHU4n3mYWrm5ljxp8SDVDUXe4H2E0yRFOvQ2XIUcokXW72UW+YaYCT/99XDaTQspcDvw==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.21.4":
   version "7.21.4"
