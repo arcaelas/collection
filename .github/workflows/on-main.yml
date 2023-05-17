@@ -24,9 +24,9 @@ jobs:
         run: |
           pkg_name="$(sed 's/.*"name": "\(.*\)".*/\1/;t;d' ./package.json)"
           pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
-          [[ $pkg_version != $(npm view $pkg_name version) ]] && {
-            pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
+          [[ $pkg_version == $(npm view $pkg_name version) ]] && {
             npm version patch
+            pkg_version="$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)"
             git commit -am "Release v$pkg_version"
             git push
           }
