@@ -1,18 +1,22 @@
 #! ts-node
+const { join } = require("path")
+const { readdirSync } = require("fs")
 const { build } = require("esbuild")
 
 build({
-    entryPoints: ["test/index.test.ts"],
+    entryPoints: readdirSync(join(__dirname, 'test'))
+        .filter(name => name.match(/\.ts$/))
+        .map(name => join('src/test', name)),
     outdir: "test",
-    bundle: false,
+    bundle: true,
     minify: true,
     platform: "node",
     format: "cjs",
 })
 
 build({
-    entryPoints: ["src/index.ts"],
-    outdir: "lib",
+    entryPoints: ['src/index.ts'],
+    outdir: "build",
     bundle: false,
     minify: true,
     platform: "node",
