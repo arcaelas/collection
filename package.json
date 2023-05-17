@@ -2,7 +2,7 @@
   "license": "ISC",
   "version": "1.11.2",
   "name": "@arcaelas/collection",
-  "homepage": "https://github.com/arcaelas/collection#readme",
+  "homepage": "https://github.com/arcaelas/collection",
   "description": "Searching, filtering and mapping collections is the bread and butter for developers, that's why we offer you \"eloquent\".",
   "keywords": [
     "collect",
@@ -22,7 +22,7 @@
     "email": "community@arcaelas.com",
     "url": "https://github.com/arcaelas/collection/issues"
   },
-  "main": "./build/index.js",
+  "main": "build/index.js",
   "files": [
     "build/",
     "*.md",
@@ -34,11 +34,12 @@
     "url": "https://github.com/arcaelas"
   },
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "test": "yarn build && jest",
-    "build": "tsc && ts-node esbuild.js",
+    "build": "tsc && node esbuild.js",
     "commit": "npm publish --access=public",
     "prepublishOnly": "yarn test",
     "postpublish": "rm -rf build"
@@ -53,11 +54,10 @@
     "@types/lodash": "^4.14.194",
     "esbuild": "^0.17.18",
     "jest": "^29.5.0",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@arcaelas/utils": "^1.45.16",
+    "@arcaelas/utils": "^1.45.17",
     "lodash": "^4.17.21"
   }
 }
