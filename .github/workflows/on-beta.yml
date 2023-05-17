@@ -26,5 +26,7 @@ jobs:
         run: |
           pkg_version="$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
           git fetch --unshallow
-          git merge --no-ff main -m "v$pkg_version"
+          git checkout beta
+          git pull
+          git merge --no-ff origin/main -m "v$pkg_version"
           git push
