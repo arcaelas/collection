@@ -1,39 +1,56 @@
 import { countBy, Dictionary, groupBy, omit, uniqBy } from 'lodash'
 import { type IObject, type Noop, get, has, clone, } from '@arcaelas/utils'
 
-export type IRegExp = { pattern: string, flags?: string }
+export type Operator = keyof typeof alias
+export type Simplify<T> = T extends infer S ? S : never
 export type Inmutables = string | number | bigint | boolean | null
-
-export interface QueryProperties {
-    // Matchers
+export type OneOf<T> = { [K in keyof T]-?: Partial<Record<Exclude<keyof T, K>, never>> & Record<K, T[K]> }[keyof T]
+export interface QueryTypes {
     $eq: Inmutables
     $exists: boolean
-    $exp: RegExp | IRegExp
+    $exp: RegExp | { pattern: string, flags?: string }
     $gt: number
     $gte: number
     $in: Inmutables[]
     $includes: Inmutables
     $lt: number
     $lte: number
-    $ne: Inmutables | Query
-    $not: Inmutables | Query
+    $not: Inmutables | Query | OneOf<Omit<QueryTypes, '$not'>>
+}
+export type Query = Partial<Record<keyof QueryTypes, never>> & {
+    [K in string]-?: Inmutables | RegExp | Query | OneOf<QueryTypes>
 }
 
-export type J<T> = {
-    [K in keyof T]: Partial<Record<Exclude<keyof T, K>, never>> & Record<K, T[K]>
-}[keyof T]
-export type Query = { [K in keyof QueryProperties]?: never } & {
-    [N in string]-?: Inmutables | RegExp | Query | J<QueryProperties>
+export interface QueryConstructor extends Function, Simplify<{
+    [K in keyof QueryTypes]: Noop<[ref: string, value: QueryTypes[K]], Noop<[item: any], boolean>>
+}> {
+    new(query: Query, ref: string): void
+    (item: any): boolean
 }
-export class QueryConstructor {
 
-    private filters: Noop[] = []
+export class QueryConstructor extends Function {
+
+    private readonly filters: any[] = []
     constructor(query: Query, ref: string = "") {
-        make_query(query, ref, this.filters)
-    }
-
-    validate(item: IObject): boolean {
-        return this.filters.every(fn => fn instanceof QueryConstructor ? fn.validate(item) : fn(item))
+        super("item", "return this.filters.every(fn=> fn(item))")
+        for (const key in query) {
+            let _ref = ref.concat('.', key),
+                value = query[key] instanceof Date ? new Date(query[key] as string).toISOString() : query[key]
+            if (value instanceof RegExp) {
+                const [, pattern, flags = ''] = String(value).match(/^(.*)?\/([a-z]+)?$/) || []
+                if (!pattern) throw new ReferenceError(`RegExp with syntax: ${value}`)
+                value = { $exp: { pattern, flags } }
+            }
+            if (typeof QueryConstructor[key] === 'function') {
+                this.filters.splice(0, this.filters.length)
+                this.filters.push(QueryConstructor[key](_ref, value))
+                break
+            }
+            else if (typeof (value ?? false) === 'object')
+                this.filters.push(new QueryConstructor(value as Query, _ref))
+            else
+                this.filters.push(QueryConstructor.$eq(_ref, value as Inmutables))
+        }
     }
 
     /**
@@ -41,12 +58,16 @@ export class QueryConstructor {
      * The $eq operator matches documents where the value of a field equals the specified value.
      * @example
      * {
+     *  age: 18
+     * }
+     * @example
+     * {
      *  age: {
      *      $eq: 18
      *  } 
      * }
      */
-    static $eq(ref: string, value: Inmutables) {
+    static $eq(ref: string, value: QueryTypes['$eq']) {
         return (item: any) => get(item, ref) === value
     }
 
@@ -54,74 +75,70 @@ export class QueryConstructor {
      * @description
      * The $not operator matches documents where the value of a field not equals the specified value.
      * @example
+     * { $not: { age: 18 } }
      * { age: { $not: 18 } }
      * { age: { $not: { $eq: 18 } } }
      */
-    static $not(ref: string, value: Inmutables | Query) {
-        value = typeof (value ?? false) === "object" ? new QueryConstructor(value as Query, ref) : value as any
-        return (item: any) => value instanceof QueryConstructor ? !value.validate(item) : get(item, ref) !== value
-    }
-
-    /**
-     * @description
-     * Alias for {@link QueryConstructor.$not $not}
-     */
-    static $ne(ref: string, value: Inmutables | Query) {
-        return this.$not(ref, value)
+    static $not(ref: string, value: QueryTypes['$not']) {
+        value = value instanceof QueryConstructor ? value : (
+            typeof (value ?? 0) === 'object' ? new QueryConstructor(value as Query, ref) : value
+        ) as Inmutables
+        return (item: any) => !(value instanceof QueryConstructor ? value(item) : get(item, ref) === value)
     }
 
     /**
      * @description
      * Matches documents where field value is matched with RegExp or RegExp ON (RegExp Object Notation)
      */
-    static $exp(ref: string, value: RegExp | IRegExp) {
-        if (value instanceof RegExp) {
-            const [, pattern, flags] = String(value).match(/^\/(.*)\/(\w+)?$/) || []
-            if (!pattern) throw new Error("RegExp could not be parsed")
-            value = { pattern, flags }
+    static $exp(ref: string, value: QueryTypes['$exp']) {
+        if (!(value instanceof RegExp)) {
+            if (value.pattern) value = new RegExp(value.pattern, value.flags ?? '')
+            else {
+                const [, pattern, flags = ''] = String(value).match(/^(.*)?\/([a-z]+)?$/) || []
+                if (!pattern) throw new ReferenceError(`ErrorType: RegExp with syntax ${value}`)
+                value = new RegExp(pattern, flags)
+            }
         }
-        if (!value?.pattern) throw new Error("RegExp could not be empty.")
-        const match = new RegExp(value.pattern, value.flags) as unknown as RegExp
-        return (item: any) => match.test(get(item, ref))
+        return (item: any) => (value as RegExp).test(get(item, ref))
     }
 
     /**
      * @description
      * Verify if field value is greater than (i.e. >) the specified value.
      */
-    // static $gt(ref: string, value: number) {
-    //     return (item: any) => (get(item, ref, 0) > Number(value)) === true
-    // }
+    static $gt(ref: string, value: QueryTypes['$gt']) {
+        return (item: any) => get(item, ref, 0) > Number(value)
+    }
 
     /**
      * @description
      * Verify if field value is less than (i.e. <) the specified value.
      */
-    static $lt(ref: string, value: number) {
-        return (item: any) => (get(item, ref, 0) < Number(value)) === true
+    static $lt(ref: string, value: QueryTypes['$lt']) {
+        return (item: any) => get(item, ref, 0) < Number(value)
     }
 
     /**
      * @description
      * Verify if field value is greater than or equal (i.e. >=) the specified value.
      */
-    static $gte(ref: string, value: number) {
-        return (item: any) => (get(item, ref, 0) >= Number(value)) === true
+    static $gte(ref: string, value: QueryTypes['$gte']) {
+        return (item: any) => get(item, ref, 0) >= Number(value)
     }
 
     /**
      * @description
      * Verify if field value is less than or equal (i.e. <=) the specified value.
      */
-    static $lte(ref: string, value: number) {
-        return (item: any) => (get(item, ref, 0) <= Number(value)) === true
+    static $lte(ref: string, value: QueryTypes['$lte']) {
+        return (item: any) => get(item, ref, 0) <= Number(value)
     }
 
     /**
      * @description
      * Check if document have a field specified.
      */
-    static $exists(ref: string, value: boolean) {
+    static $exists(ref: string, value: QueryTypes['$exists']) {
         return (item: any) => has(item, ref) === value
     }
 
@@ -129,55 +146,32 @@ export class QueryConstructor {
      * @description
      * Use $in operator to validate if field value exist in a specific array element
      */
-    static $in(ref: string, value: Inmutables[]) {
-        return (item: any) => value.includes(
-            get(item, ref)
-        )
+    static $in(ref: string, value: QueryTypes['$in']) {
+        return (item: any) => value.includes(get(item, ref))
     }
 
     /**
      * @description
      * Check if field value contain a value specified
      */
-    static $includes(ref: string, value: Inmutables) {
+    static $includes(ref: string, value: QueryTypes['$includes']) {
         return (item: any) => {
             const arr = get(item, ref, []);
-            return arr instanceof Array && arr.includes(value)
+            return Array.isArray(arr) && arr.includes(value)
         }
     }
 
 }
 
-
-
 export enum alias {
     "=" = "$eq",
-    "!=" = "$ne",
+    "!=" = "$not",
     ">" = "$gt",
     "<" = "$lt",
     ">=" = "$gte",
     "<=" = "$lte",
     in = "$in",
     includes = "$includes",
-}
-export type Operator = keyof typeof alias
-
-/**
- * @description This method build a Query Array to filter elements
- */
-export function make_query(query: Query, ref: string = "", arr: any[] = []) {
-    for (const key in query) {
-        let value = query[key],
-            path = (ref && ref + "/") + key
-        if (value instanceof RegExp) value = { $exp: value } as any
-        if (value instanceof Date) value = value.toISOString()
-        if (typeof QueryConstructor[key] === 'function')
-            arr.push(QueryConstructor[key](ref, value))
-        else if (typeof (value ?? false) === 'object')
-            make_query(value as any, path, arr)
-        else arr.push(QueryConstructor.$eq(path, value as any))
-    }
-    return arr
 }
 
 export default class Collection<I extends IObject = IObject> {
@@ -887,8 +881,10 @@ export default class Collection<I extends IObject = IObject> {
     find(query: Query): Collection<I>
     find(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
     find(handler: any): Collection<I> {
-        handler = typeof handler === "function" ? [handler] : make_query(handler)
-        return this.collect(this.items.filter(item => handler.every(fn => fn(item))))
+        const filter = typeof handler === 'function' ? handler : (
+            typeof (handler ?? 0) === 'object' ? new QueryConstructor(handler) : (() => false)
+        )
+        return this.collect(this.items.filter(filter))
     }
 
     /**
@@ -925,8 +921,10 @@ export default class Collection<I extends IObject = IObject> {
     not(query: Query): Collection<I>
     not(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
     not(handler: any) {
-        handler = typeof handler === "function" ? [handler] : make_query(handler)
-        return this.collect(this.items.filter(item => !handler.some(fn => fn(item))))
+        const filter = typeof handler === 'function' ? handler : (
+            typeof (handler ?? 0) === 'object' ? new QueryConstructor(handler) : (() => false)
+        )
+        return this.collect(this.items.filter((item: any) => !filter(item)))
     }
 }
 
