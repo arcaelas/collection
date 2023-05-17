@@ -40,7 +40,7 @@
     "test": "yarn build && jest",
     "build": "tsc && ts-node esbuild.js",
     "commit": "npm publish --access=public",
-    "prepublishOnly": "yarn test && npm version patch",
+    "prepublishOnly": "yarn test",
     "postpublish": "rm -rf lib"
   },
   "devDependencies": {
