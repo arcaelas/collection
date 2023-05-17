@@ -25,13 +25,8 @@ jobs:
       - name: merge
         run: |
           pkg_version="$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')"
-          git checkout main
-          git checkout -b "v$pkg_version"
-
-
-
           git fetch --unshallow
           git checkout main
           git pull
-          git merge --no-ff origin/main -m "v$pkg_version"
+          git merge --no-ff beta -m "v$pkg_version"
           git push
