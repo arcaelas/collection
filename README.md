@@ -47,36 +47,20 @@ import Collection from "@arcaelas/collection"
 const collection = new Collection([ ... ])
 ```
 
-### all
-> Return all elements as Plain JSON
+### **find()**
+> All matched elements fro collection, you can use callback or QueryHandler:
 ```typescript
-collection.all() // Expected: [ {...}, ... ]
-```
-
-### collect
-> Create a collection with parent collection prototypes.
-```typescript
-collection.collect([...]) // Expected: Collection
-```
-
-### count
-> Count items length into collection.
-```typescript
-collection.count() // 0 - Infinity
-```
-
-### find
-> Filter the elements of the collection using Functions and Queries, some of the examples could be:
-
-> **NOTE:** It is important to use "$" to refer to a property based query.
-```typescript
+// Using callback to filtering...
 collection.find(item=>{
 	return item.age >= 18;
 });
-// or
+
+// or match expressions...
 collection.find({
 	age:{ $gte: 18 }
 });
+
+// veteran level.
 collection.find({
 	name: /Alejandro/,
 	skills:{
@@ -95,8 +79,19 @@ collection.find({
 });
 ```
 
-### first
-> Use **find()** and get first element
+### **not()**
+> Get all elements that not matched with expression or handler.
+```typescript
+users.find({
+	online: { $not: false }
+})
+user.not({
+	online: false
+})
+```
+
+### **first()**
+> Get first matched element, using **QueryHandler**
 ```typescript
 users.first({
 	_id: "...",
@@ -109,32 +104,84 @@ users.first({
 })
 ```
 
-### not
-> Is opposite of **find()**
+### **last()**
+> Get last matched element, using **QueryHandler**
 ```typescript
-users.find({
-	online: { $not: false }
-})
-user.not({
-	online: false
+users.last({
+	_id: "...",
+	age:{ $gte: 18 },
+	role:{
+		$not:{
+			$in:["admin"]
+		}
+	}
 })
 ```
 
-### where
+### **where()**
 > Use this shorthand to filter items
 ```typescript
 const offline = users.where("online", false)
 const online = users.where("online", "==", false)
 ```
 
-### whereNot
+### **whereNot()**
 > Is opposite of **where()**
 ```typescript
 const offline = users.whereNot("online", true)
 const online = users.whereNot("online", "==", true)
 ```
 
-### dd
+### **update()**
+> Updates information for items that match a specific or general filter expression.
+```typescript
+// set all "item.status" to "false"
+collection.update({ status: false })
+
+// Filtering
+collection.update({
+	expireAt: { 
+	   $lte: new Date() // where expireAt is past
+	}
+}, {
+	online: false // Set online to false
+})
+```
+
+### **delete()**
+> Remove matched elementos from collection
+> **NOTE:** This method mutate collection
+```typescript
+// Remove all elements where "deletedAt" is not "nullable"
+collection.delete({
+	deletedAt: {
+		$exists: true
+	}
+})
+```
+
+
+
+
+### **all()**
+> Return all elements as Plain JSON
+```typescript
+collection.all() // Expected: [ {...}, ... ]
+```
+
+### **collect()**
+> Create a collection with parent collection prototypes.
+```typescript
+collection.collect([...]) // Expected: Collection
+```
+
+### **count()**
+> Count items length into collection.
+```typescript
+collection.count() // 0 - Infinity
+```
+
+### **dd()**
 > The dd method will console.log the collection and exit the current process
 ```typescript
 collection.dd()
@@ -142,88 +189,86 @@ collection.dd()
 // (Exits node.js process)
 ```
 
-### dump
+### **dump()**
 > Print collection and continue.
 ```typescript
 collection.dump()
 ```
 
-### max
+### **max()**
 > The max method returns the maximum value of a given key.
 ```typescript
 pictures.max("upvotes")
 ```
 
-### min
+### **min()**
 > The min method returns the minimum value of a given key.
 ```typescript
 pictures.min("upvotes")
 ```
 
-### random
+### **random()**
 > Get random elements, with the argument "length" the number of elements is indicated.
 ```typescript
 collection.random() // All elements random sorted
 collection.random(2) // Two random elements
 ```
 
-### shuffle
+### **shuffle()**
 > This method set items order as random and mutate collection.
 ```typescript
 collection.shuffle()
 ```
 
-### sum
+### **sum()**
 > Sum the elements values according to a specific key.
 ```typescript
 const to_pay = shop_cart.sum("articles.price")
 ```
 
-### chunk
+### **chunk()**
 > Break the collection into multiple, smaller collections of a given size.
 ```typescript
 paginate = posts.chunks(100)
 ```
 
-### countBy
+### **countBy()**
 > Group items by key and count
 ```typescript
 products.countBy("buyed")
 ```
 
-### each
+### **each()**
 > Iterate over each collection elements, if return false break iteration
 ```typescript
 sockets.each(socket=>{
-	if( !socket.online ) return // This stop iteration
+	if( !socket.online ) return false// This stop iteration
+	else if( socket.name ) return // Iteration skip current cycle, not stoped.
 	socket.send("ping")
 })
 ```
 
-### every
-> Read [Array.prototype.every](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
-
-### forget
+### **forget()**
 > Remove a specific fields from each items
 ```typescript
 	sessions.forget("access_token")
 ```
 
-### groupBy
+### **groupBy()**
 > Group items by key
 ```typescript
 const online = followers.grupBy("online") // { ... }
 const offline = online.false
 ```
 
-### paginate
+### **paginate()**
 > Wrap element in X number of items and return specific page.
 ```typescript
 const page_one = post.paginate(1) // 1 - 20
 const page_two = post.paginate(2, 500) // 501 - 1000
 ```
 
-### unique
+### **unique()**
 > Filter elements and return only elements that key/value is unique.
 ```typescript
 const unlinked = links.unique("_id")
@@ -232,7 +277,7 @@ const removed = trash.unique((item)=>{
 })
 ```
 
-### macro
+### **macro()**
 > Adding custom methods for current collection.
 ```typescript
 collection.macro("getName", (item)=>{
@@ -243,18 +288,7 @@ collection.getName() // Expected: [ Joe, Julia, ... ]
 
 ```
 
-### macro (static)
-> Adding custom method for all Collections
-```typescript
-Collection.macro("get", (item, key)=>{...})
-
-const pictures = new Collection([...])
-
-pictures.get("url") // Expected: [...]
-```
-
-
-### join
+### **join()**
 > Returns a string with the values of the specified key in each object.
 ```typescript
 
@@ -269,12 +303,41 @@ collection.join("email", ", ", " and ")
 ```
 
 
-### sort
+### **sort()**
 > The sort method sorts the collection.
 ```typescript
 collection.sort((a, b)=> a.age > b.age ? 1 : -1)
 // or
 collection.sort("age", "desc")
+```
+
+### **every()**
+> "Every" can verify that all elements satisfy a certain expression.
+> Read [Array.prototype.every](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
+```typescript
+// Check if every items have "_id" field
+collection.every('_id')
+
+// All items have "status" == "enabled"
+collection.every('status', 'enabled')
+
+// All prices items is greater than zero "0"
+collection.every('price', '>', 0)
+
+// Using QueryHandler to match every items.
+collection.every({
+	expired: { $not: true } // All "expired" items is ddifferent that "true"
+})
+```
+
+### macro (static)
+> Adding custom method for all Collections
+```typescript
+Collection.macro("get", (item, key)=>{...})
+
+const pictures = new Collection([...])
+
+pictures.get("url") // Expected: [...]
 ```
 
 ### concat
