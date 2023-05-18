@@ -930,6 +930,50 @@ export default class Collection<I extends IObject = IObject> {
             typeof (handler ?? 0) === 'object' ? new QueryConstructor({ $not: handler } as Query) : (() => false)
         )))
     }
+
+    /**
+     * @description
+     * Updates information for items that match a specific or general filter expression.
+     * @example
+     * // set all "item.status" to "false"
+     * collection.update({ status: false })
+     * 
+     * // Filtering
+     * collection.update({
+     *  expireAt: { 
+     *      $lte: new Date() // where expireAt is past
+     *  }
+     * }, {
+     *  online: false // Set online to false
+     * })
+     */
+    update<T = I>(set: T): { before: I, after: I }[]
+    update<T = I>(where: Query, set: T): { before: I, after: I }[]
+    update(...args: any[]) {
+        let output: any[] = [],
+            set = args.length === 1 ? args[0] : args[1],
+            where = args.length === 1 ? () => true : new QueryConstructor(args[0])
+        for (const item of this.items)
+            if (where(item))
+                output.push({ before: clone(item), after: merge(item, set) })
+        return output
+    }
+
+    /**
+     * @description
+     * Remove matched elementos from collection
+     * NOTE: This method mutate collection
+     * @example
+     * collection.delete({ deletedAt: { $exists: true } })
+     * 
+     * @returns {number} - Deleted elements count.
+     */
+    delete(where: Query) {
+        const length = this.items.length
+        this.items = this.not(where).all()
+        return length - this.items.length
+    }
+
 }
 
 export { Collection }
