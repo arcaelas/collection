@@ -558,7 +558,15 @@ export default class Collection<I extends IObject = IObject> {
                     return value instanceof RegExp ? value.test(v) : value === v
                 })
             }
-            return this.items.every(o => has(o, key))
+                break
+            case 2:
+                return this.items.every(o => get(o, args[0]) === args[1])
+            case 3:
+                if (!alias[args[1]])
+                    throw new TypeError(args[0] + ` is not a valid operator, use: ` + Object.keys(alias))
+                return this.items.every(
+                    QueryConstructor[args[1]](args[0], args[2])
+                )
         }
         throw new Error('Some argument is invalid, "key" must be a valid function iterator or string.')
     }
