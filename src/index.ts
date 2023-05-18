@@ -784,7 +784,6 @@ export default class Collection<I extends IObject = IObject> {
         )
     }
 
-
     /**
      * @description The where method filters the collection by a given key / value pair:
      * @example
