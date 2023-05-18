@@ -547,17 +547,22 @@ export default class Collection<I extends IObject = IObject> {
      *  return item.stock > 0  // Check if all items have "stock" property > 0
      * })
      */
-    every(...args: [key: string] | [key: string, value: any] | [iterator: (value: I, index: number, arr: I[]) => boolean]) {
-        const [key, value] = args
-        if (typeof key === 'function')
-            return this.items.every(key)
-        else if (typeof key === 'string') {
-            if (args.length > 1) {
-                return this.items.every(o => {
-                    let v = get(o, key)
-                    return value instanceof RegExp ? value.test(v) : value === v
-                })
-            }
+    every(key: string): boolean
+    every(query: Query): boolean
+    every(handler: Noop<[item: I, index: number, arr: I[]], boolean>): boolean
+    every(key: string, value: any): boolean
+    every(key: string, operator: Operator, value: any): boolean
+    every(...args: any[]) {
+        switch (args.length) {
+            case 1:
+                switch (typeof (args[0] ?? 0)) {
+                    case 'function':
+                        return this.items.every(args[0])
+                    case 'string':
+                        return this.items.every(o => has(o, args[0]))
+                    case 'object':
+                        return this.find(args[0]).count() === this.items.length
+                }
                 break
             case 2:
                 return this.items.every(o => get(o, args[0]) === args[1])
