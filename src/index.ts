@@ -1,5 +1,5 @@
 import { countBy, Dictionary, groupBy, omit, uniqBy } from 'lodash'
-import { type IObject, type Noop, get, has, clone, } from '@arcaelas/utils'
+import { type IObject, type Noop, get, has, clone, merge, } from '@arcaelas/utils'
 
 export type Operator = keyof typeof alias
 export type Simplify<T> = T extends infer S ? S : never
