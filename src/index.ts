@@ -237,7 +237,7 @@ export default class Collection<I extends IObject = IObject> {
         const target = this.prototype || this['__proto__'] as unknown as T
         if (typeof key !== "string") throw new Error("The key-name must be a string")
         if (typeof value !== "function") throw new Error("Handler must be function")
-        if (key in target) throw new Error("This method could not be override")
+        if (key in target) console.warn("setting %s: This method already exists.", key)
         Object.defineProperty(target, key, { value, enumerable: false, })
         return target as T
     }
