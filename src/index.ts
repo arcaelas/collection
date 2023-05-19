@@ -771,11 +771,7 @@ export default class Collection<I extends IObject = IObject> {
     first(query: Query): I | null
     first(iterator: (item: I, index: number, arr: I[]) => boolean): I | null
     first(handler?: any) {
-        return handler === undefined ? this.items[0] : (
-            typeof handler === 'function' ? this.items.find(handler) : (
-                typeof (handler ?? 0) === 'object' ? this.find(handler as Query).all().shift() : null
-            )
-        )
+        return (handler === undefined ? this.items : this.find(handler).all())[0] as I
     }
 
     /**
