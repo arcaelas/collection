@@ -1,5 +1,5 @@
 import { countBy, Dictionary, groupBy, omit, uniqBy } from 'lodash'
-import { type IObject, type Noop, get, has, clone, merge, } from '@arcaelas/utils'
+import { type IObject, type Noop, get, has, clone, merge, Bind, } from '@arcaelas/utils'
 
 export type Operator = keyof typeof alias
 export type Simplify<T> = T extends infer S ? S : never
@@ -218,8 +218,8 @@ export default class Collection<I extends IObject = IObject> {
      * 
      * collection.some(item=> item.id);
      */
-    macro(key: string, value: Function): this {
-        return Collection.macro.call(this, key, value) as any
+    macro(key: string, handler: Bind<this, Noop<any[], any>>): this {
+        return Collection.macro.call(this, key, handler as any) as this
     }
 
     /**
@@ -233,13 +233,13 @@ export default class Collection<I extends IObject = IObject> {
      * const collection = new Eloquen([ ... ])
      * const someItem: boolean = collection.some(e=> e.age >= 18)
      */
-    static macro(key: string, value: Function) {
-        const target = this.prototype || this['__proto__']
-        if (typeof key !== "string") throw new Error("The key-name must be a string");
-        else if (typeof value !== "function") throw new Error("Handler must be function");
-        else if (key in target) throw new Error("This method could not be override")
+    static macro<T extends Collection = Collection>(key: string, value: Bind<T, Noop<any[], any>>) {
+        const target = this.prototype || this['__proto__'] as unknown as T
+        console.assert(typeof key === "string", "The key-name must be a string")
+        console.assert(typeof value === "function", "Handler must be function")
+        console.assert(!(key in target), "This method could not be override")
         Object.defineProperty(target, key, { value, enumerable: false, })
-        return target
+        return target as T
     }
 
     /**
