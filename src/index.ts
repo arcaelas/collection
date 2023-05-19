@@ -198,6 +198,14 @@ export default class Collection<I extends IObject = IObject> {
 
     /**
      * @description
+     * Gets the length of the array.
+     * @description
+     * This is a number one higher than the highest index in the array.
+     */
+    get length() { return this.items.length }
+
+    /**
+     * @description
      * Clone this Collection instance with all macro added in current instance.
      * @example
      * const clone = items.collect([])
@@ -237,7 +245,6 @@ export default class Collection<I extends IObject = IObject> {
         const target = this.prototype || this['__proto__'] as unknown as T
         if (typeof key !== "string") throw new Error("The key-name must be a string")
         if (typeof value !== "function") throw new Error("Handler must be function")
-        if (key in target) console.warn("setting %s: This method already exists.", key)
         Object.defineProperty(target, key, { value, enumerable: false, })
         return target as T
     }
@@ -259,6 +266,17 @@ export default class Collection<I extends IObject = IObject> {
      */
     concat<T extends I>(...items: Array<T | T[]>): Collection<T | I> {
         return this.collect(this.items.concat(items.flat(Infinity) as any));
+    }
+
+    /**
+     * @description
+     * Converts this Collection to a JavaScript Object Notation (JSON) string.
+     * @param replacer A function that transforms the results.
+     * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+     */
+    stringify(replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
+    stringify(...args: any[]) {
+        return JSON.stringify(this.items, ...args)
     }
 
     /**
