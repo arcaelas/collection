@@ -237,7 +237,7 @@ export default class Collection<I extends IObject = IObject> {
         const target = this.prototype || this['__proto__'] as unknown as T
         console.assert(typeof key === "string", "The key-name must be a string")
         console.assert(typeof value === "function", "Handler must be function")
-        console.assert(!(key in target), "This method could not be override")
+        console.assert(!target[key], "This method could not be override")
         Object.defineProperty(target, key, { value, enumerable: false, })
         return target as T
     }
