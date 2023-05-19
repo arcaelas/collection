@@ -202,7 +202,7 @@ export default class Collection<I extends IObject = IObject> {
      * @description
      * This is a number one higher than the highest index in the array.
      */
-    get length() { return this.items.length }
+    public get length() { return this.items.length }
 
     /**
      * @description
