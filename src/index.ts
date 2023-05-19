@@ -235,9 +235,9 @@ export default class Collection<I extends IObject = IObject> {
      */
     static macro<T extends Collection = Collection>(key: string, value: Bind<T, Noop<any[], any>>) {
         const target = this.prototype || this['__proto__'] as unknown as T
-        console.assert(typeof key === "string", "The key-name must be a string")
-        console.assert(typeof value === "function", "Handler must be function")
-        console.assert(!target[key], "This method could not be override")
+        if (typeof key !== "string") throw new Error("The key-name must be a string")
+        if (typeof value !== "function") throw new Error("Handler must be function")
+        if (key in target) throw new Error("This method could not be override")
         Object.defineProperty(target, key, { value, enumerable: false, })
         return target as T
     }
