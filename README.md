@@ -47,21 +47,21 @@ import Collection from "@arcaelas/collection"
 const collection = new Collection([ ... ])
 ```
 
-### **find()**
+### **filter()**
 > All matched elements fro collection, you can use callback or QueryHandler:
 ```typescript
 // Using callback to filtering...
-collection.find(item=>{
+collection.filter(item=>{
 	return item.age >= 18;
 });
 
 // or match expressions...
-collection.find({
+collection.filter({
 	age:{ $gte: 18 }
 });
 
 // veteran level.
-collection.find({
+collection.filter({
 	name: /Alejandro/,
 	skills:{
 		$contains: "Liberty"
@@ -82,7 +82,7 @@ collection.find({
 ### **not()**
 > Get all elements that not matched with expression or handler.
 ```typescript
-users.find({
+users.filter({
 	online: { $not: false }
 })
 user.not({
@@ -135,16 +135,17 @@ const online = users.whereNot("online", "==", true)
 ### **update()**
 > Updates information for items that match a specific or general filter expression.
 ```typescript
-// set all "item.status" to "false"
-collection.update({ status: false })
+// Simple matches
+// Update all elements that "online" field is false
+// Add or replace "deletedAt" field with "new Date()"
+collection.update({ online: false }, { deletedAt: new Date() })
 
-// Filtering
-collection.update({
-	expireAt: { 
-	   $lte: new Date() // where expireAt is past
-	}
+// Most common
+collect.update({
+	email: /gmail\.com$/g // all items that email is Gmail Host
 }, {
-	online: false // Set online to false
+	email: null, // Set current email to null
+	prevEmail: "${email}" // Save email in this field
 })
 ```
 
@@ -160,25 +161,10 @@ collection.delete({
 })
 ```
 
-
-
-
-### **all()**
-> Return all elements as Plain JSON
-```typescript
-collection.all() // Expected: [ {...}, ... ]
-```
-
 ### **collect()**
 > Create a collection with parent collection prototypes.
 ```typescript
 collection.collect([...]) // Expected: Collection
-```
-
-### **count()**
-> Count items length into collection.
-```typescript
-collection.count() // 0 - Infinity
 ```
 
 ### **dd()**
@@ -287,21 +273,6 @@ collection.macro("getName", (item)=>{
 collection.getName() // Expected: [ Joe, Julia, ... ]
 
 ```
-
-### **join()**
-> Returns a string with the values of the specified key in each object.
-```typescript
-
-collection.join("email")
-// dany@email.com,julia@email.com,rose@email.com
-
-collection.join("folders", "-")
-// dany@email.com-julia@email.com-rose@email.com
-
-collection.join("email", ", ", " and ")
-// dany@email.com, julia@email.com and rose@email.com
-```
-
 
 ### **sort()**
 > The sort method sorts the collection.
