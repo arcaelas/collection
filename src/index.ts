@@ -1,168 +1,7 @@
-import { countBy, Dictionary, groupBy, omit, uniqBy } from 'lodash'
-import { type IObject, type Noop, get, has, clone, merge, Bind, } from '@arcaelas/utils'
+import { Dictionary, groupBy, omit, uniqBy } from 'lodash'
+import { type IObject, type Noop, get, has, merge, Bind, Inmutables, Query, query, source, } from '@arcaelas/utils'
 
-export type Operator = keyof typeof alias
-export type Simplify<T> = T extends infer S ? S : never
-export type Inmutables = string | number | bigint | boolean | null
-export type OneOf<T> = { [K in keyof T]-?: Partial<Record<Exclude<keyof T, K>, never>> & Record<K, T[K]> }[keyof T]
-export interface QueryTypes {
-    $eq: Inmutables
-    $exists: boolean
-    $exp: RegExp | { pattern: string, flags?: string }
-    $gt: number
-    $gte: number
-    $in: Inmutables[]
-    $includes: Inmutables
-    $lt: number
-    $lte: number
-    $not: Inmutables | Query | OneOf<Omit<QueryTypes, '$not'>>
-}
-export type Query = Partial<Record<keyof QueryTypes, never>> & {
-    [K in string]-?: Inmutables | RegExp | Query | OneOf<QueryTypes>
-}
-
-export interface QueryConstructor extends Function, Simplify<{
-    [K in keyof QueryTypes]: Noop<[ref: string, value: QueryTypes[K]], Noop<[item: any], boolean>>
-}> {
-    new(query: Query, ref: string): void
-    (item: any): boolean
-}
-
-export class QueryConstructor extends Function {
-
-    private readonly filters: any[] = []
-    constructor(query: Query, ref: string = "") {
-        super("item", "return this.filters.every(fn=>fn(item))")
-        for (const key in query) {
-            let _ref = (ref && ref + '.') + key,
-                value = query[key] instanceof Date ? new Date(query[key] as string).toISOString() : query[key]
-            if (value instanceof RegExp) {
-                const [, pattern, flags = ''] = String(value).match(/^(.*)?\/([a-z]+)?$/) || []
-                if (!pattern) throw new ReferenceError(`RegExp with syntax: ${value}`)
-                value = { $exp: { pattern, flags } }
-            }
-            if (typeof QueryConstructor[key] === 'function') {
-                this.filters.splice(0, this.filters.length)
-                this.filters.push(QueryConstructor[key](ref, value))
-                break
-            }
-            else if (typeof (value ?? false) === 'object')
-                this.filters.push(new QueryConstructor(value as Query, _ref))
-            else
-                this.filters.push(QueryConstructor.$eq(_ref, value as Inmutables))
-        }
-        return this.bind(this)
-    }
-
-    /**
-     * @description
-     * The $eq operator matches documents where the value of a field equals the specified value.
-     * @example
-     * {
-     *  age: 18
-     * }
-     * @example
-     * {
-     *  age: {
-     *      $eq: 18
-     *  } 
-     * }
-     */
-    static $eq(ref: string, value: QueryTypes['$eq']) {
-        return (item: any) => get(item, ref) === value
-    }
-
-    /**
-     * @description
-     * Check if document have a field specified.
-     */
-    static $exists(ref: string, value: QueryTypes['$exists']) {
-        return (item: any) => has(item, ref) === value
-    }
-
-    /**
-     * @description
-     * Matches documents where field value is matched with RegExp or RegExp ON (RegExp Object Notation)
-     */
-    static $exp(ref: string, value: QueryTypes['$exp']) {
-        if (!(value instanceof RegExp)) {
-            if (value.pattern) value = new RegExp(value.pattern, value.flags ?? '')
-            else {
-                const [, pattern, flags = ''] = String(value).match(/^(.*)?\/([a-z]+)?$/) || []
-                if (!pattern) throw new ReferenceError(`ErrorType: RegExp with syntax ${value}`)
-                value = new RegExp(pattern, flags)
-            }
-        }
-        return (item: any) => (value as RegExp).test(get(item, ref))
-    }
-
-    /**
-     * @description
-     * Verify if field value is greater than (i.e. >) the specified value.
-     */
-    static $gt(ref: string, value: QueryTypes['$gt']) {
-        return (item: any) => get(item, ref, 0) > Number(value)
-    }
-
-    /**
-     * @description
-     * Verify if field value is greater than or equal (i.e. >=) the specified value.
-     */
-    static $gte(ref: string, value: QueryTypes['$gte']) {
-        return (item: any) => get(item, ref, 0) >= Number(value)
-    }
-
-    /**
-     * @description
-     * Use $in operator to validate if field value exist in a specific array element
-     */
-    static $in(ref: string, value: QueryTypes['$in']) {
-        return (item: any) => value.includes(get(item, ref))
-    }
-
-    /**
-     * @description
-     * Check if field value contain a value specified
-     */
-    static $includes(ref: string, value: QueryTypes['$includes']) {
-        return (item: any) => {
-            const arr = get(item, ref, []);
-            return Array.isArray(arr) && arr.includes(value)
-        }
-    }
-
-    /**
-     * @description
-     * Verify if field value is less than (i.e. <) the specified value.
-     */
-    static $lt(ref: string, value: QueryTypes['$lt']) {
-        return (item: any) => get(item, ref, 0) < Number(value)
-    }
-
-    /**
-     * @description
-     * Verify if field value is less than or equal (i.e. <=) the specified value.
-     */
-    static $lte(ref: string, value: QueryTypes['$lte']) {
-        return (item: any) => get(item, ref, 0) <= Number(value)
-    }
-
-    /**
-     * @description
-     * The $not operator matches documents where the value of a field not equals the specified value.
-     * @example
-     * { $not: { age: 18 } }
-     * { age: { $not: 18 } }
-     * { age: { $not: { $eq: 18 } } }
-     */
-    static $not(ref: string, value: QueryTypes['$not']) {
-        value = value instanceof QueryConstructor ? value : (
-            typeof (value ?? 0) === 'object' ? new QueryConstructor(value as Query, ref) : value
-        ) as Inmutables
-        return (item: any) => !(value instanceof QueryConstructor ? value(item) : get(item, ref) === value)
-    }
-
-}
+type Operator = keyof typeof alias
 
 export enum alias {
     "=" = "$eq",
@@ -175,34 +14,19 @@ export enum alias {
     includes = "$includes",
 }
 
-export default class Collection<I extends IObject = IObject> {
+
+export default class Collection<I extends IObject = IObject, M = {}> extends Array<I> {
+
     [K: string]: any
-    protected items: I[] = []
-
-    /**
-     * @description
-     * Start a new collection from a list of items.
-     * @example
-     * const items = new Collection()
-     * const collection = new Collection([
-     *  {
-     *      name: "Arcaelas Insiders",
-     *      team: 105,
-     *      location: 'San Antonio, Valparaíso - Chile'
-     *  }
-     * ])
-     */
-    constructor(items: Collection | I | I[] = []) {
-        this.items = items instanceof Collection ? items.all() as I[] : [].concat(items as any).map(clone) as I[]
+    private readonly query: (query: Query<M>) => (item: Partial<I>) => boolean = null as any
+    constructor(items?: Collection | I | I[], validator: M = {} as any) {
+        super(0)
+        Object.defineProperty(this, 'query', {
+            enumerable: false,
+            value: query(validator)
+        })
+        super.push(...[].concat(arguments.length ? items : [] as any))
     }
-
-    /**
-     * @description
-     * Gets the length of the array.
-     * @description
-     * This is a number one higher than the highest index in the array.
-     */
-    public get length() { return this.items.length }
 
     /**
      * @description
@@ -215,20 +39,9 @@ export default class Collection<I extends IObject = IObject> {
      * const collection = new Eloquen([ ... ])
      * const someItem: boolean = collection.some(e=> e.age >= 18)
      */
-    static macro<T extends Collection = Collection>(key: string, value: Bind<T, Noop<any[], any>>) {
-        const target = this.prototype || this['__proto__'] as unknown as T
-        if (typeof key !== "string") throw new Error("The key-name must be a string")
-        if (typeof value !== "function") throw new Error("Handler must be function")
-        Object.defineProperty(target, key, { value, enumerable: false, })
-        return target as T
-    }
-
-    /**
-     * @description
-     * Return all items into collection.
-     */
-    public all(): I[] {
-        return this.items.filter(Boolean) as any;
+    static macro(key: string, value: Bind<Collection, Noop<any[], any>>): Collection {
+        (this.prototype ?? this['__proto__'])[key] = value.bind(this as unknown as Collection)
+        return this as unknown as Collection
     }
 
     /**
@@ -239,10 +52,10 @@ export default class Collection<I extends IObject = IObject> {
      * const chunks = collection.chunk(4);
      * chunks.all(); // [[1, 2, 3, 4], [5, 6, 7]]
      */
-    public chunk(size: number): Array<I[]> {
+    public chunk(size: number) {
         const chunks: I[][] = [];
-        for (let i = 0; i < Math.ceil(this.items.length / size); i++)
-            chunks.push(this.items.slice(i * size, (i + 1) * size))
+        for (let i = 0; i < Math.ceil(this.length / size); i++)
+            chunks.push(super.slice(i * size, (i + 1) * size))
         return chunks;
     }
 
@@ -252,37 +65,10 @@ export default class Collection<I extends IObject = IObject> {
      * @example
      * const clone = items.collect([])
      */
-    public collect<T extends IObject>(items?: T[]): Collection<T> {
-        const c = new Collection(items);
+    public collect<T extends IObject = I>(items?: T[]): Collection<T, M> {
+        const c = new Collection(items)
         Object.setPrototypeOf(c, Object.getPrototypeOf(this));
-        return c;
-    }
-
-    /**
-     * @description
-     * The concat method is used to merge two or more collections/arrays/objects:
-     * You can also concat() an array of objects, or a multidimensional array.
-     * @example
-     * const collection = collect([ { name: 'Arcaelas Insiders' } ]);
-     * let concatenated = collection.concat({ name: 'Arcaelas Groupd, LLC' });
-     * 
-     * concatenated.all();
-     * 
-     * // [
-     *  { name: 'Arcaelas Insiders' },
-     *  { name: 'Arcaelas Groupd, LLC' }
-     * ]
-     */
-    public concat<T extends I>(...items: Array<T | T[]>): Collection<T | I> {
-        return this.collect(this.items.concat(items.flat(Infinity) as any));
-    }
-
-    /**
-     * @description
-     * Count items length into collection.
-     */
-    public count(): number {
-        return Math.max(this.items.length, 0)
+        return c as any;
     }
 
     /**
@@ -296,18 +82,24 @@ export default class Collection<I extends IObject = IObject> {
      * }
      */
     public countBy(key: string): Record<string, number>
-    public countBy(executor: (value: I, index: number, arr: I[]) => (string | number | symbol)): Record<string, number>
+    public countBy(executor: (value: I, index: number, arr: I[]) => (string | number)): Record<string, number>
     public countBy(iterator) {
-        if (!['function', 'string'].includes(typeof iterator))
-            throw new Error("Handler must be string or Function Iterator");
-        return countBy(this.items, iterator)
+        let handler = iterator
+        if (typeof iterator === 'string') handler = i => get(i, iterator)
+        const counts = {} as Record<string, number>
+        this.forEach((v, i, a) => {
+            const key = handler(v, i, a) as string;
+            counts[key] ??= 0
+            counts[key] += 1
+        })
+        return counts
     }
 
     /**
     * @description
     * Print collection and exit.
     */
-    public dd(): void | never {
+    public dd() {
         this.dump();
         if (typeof process !== 'undefined')
             process.exit(1);
@@ -322,16 +114,18 @@ export default class Collection<I extends IObject = IObject> {
      * 
      * @returns {number} - Deleted elements count.
      */
-    public delete(where: Query) {
-        const length = this.items.length
-        this.items = this.not(where).all()
-        return length - this.items.length
+    public delete(where: Query<M>) {
+        let length = this.length,
+            items = this.not(where)
+        super.splice(0, length)
+        super.push(...items)
+        return length - this.length
     }
 
     /**
     * @description Print collection and continue.
     */
-    public dump(): this {
+    public dump() {
         console.log(this);
         return this;
     }
@@ -358,8 +152,8 @@ export default class Collection<I extends IObject = IObject> {
      * });
      */
     public each(fn: (item: I, index: number, arr: I[]) => any): this {
-        for (let index = 0, stop = false; index < this.items.length && !stop; index += 1)
-            stop = fn(this.items[index], index, this.items) === false;
+        for (let index = 0, stop = false; index < this.length && !stop; index += 1)
+            stop = fn(this[index], index, this) === false;
         return this;
     }
 
@@ -377,7 +171,7 @@ export default class Collection<I extends IObject = IObject> {
      * })
      */
     public every(key: string): boolean
-    public every(query: Query): boolean
+    public every(query: Query<M>): boolean
     public every(handler: Noop<[item: I, index: number, arr: I[]], boolean>): boolean
     public every(key: string, value: any): boolean
     public every(key: string, operator: Operator, value: any): boolean
@@ -386,20 +180,20 @@ export default class Collection<I extends IObject = IObject> {
             case 1:
                 switch (typeof (args[0] ?? 0)) {
                     case 'function':
-                        return this.items.every(args[0])
+                        return super.every(args[0])
                     case 'string':
-                        return this.items.every(o => has(o, args[0]))
+                        return super.every(o => has(o, args[0]))
                     case 'object':
-                        return this.find(args[0]).count() === this.items.length
+                        return this.filter(args[0]).length === this.length
                 }
                 break
             case 2:
-                return this.items.every(o => get(o, args[0]) === args[1])
+                return super.every(o => get(o, args[0]) === args[1])
             case 3:
                 if (!alias[args[1]])
                     throw new TypeError(args[0] + ` is not a valid operator, use: ` + Object.keys(alias))
-                return this.items.every(
-                    QueryConstructor[args[1]](args[0], args[2])
+                return super.every(
+                    this.query({ [args[0]]: { [alias[args[1]]]: args[2] } } as any)
                 )
         }
         throw new Error('Some argument is invalid, "key" must be a valid function iterator or string.')
@@ -409,15 +203,15 @@ export default class Collection<I extends IObject = IObject> {
      * @description Filter the elements of the collection using Functions and Queries, some of the examples could be:
      * @description NOTE: It is important to use "$" to refer to a property based query.
      * @example
-     * collection.find(item=>{
+     * collection.filter(item=>{
      *  return item.age >= 18;
      * });
      * // or
-     * collection.find({
+     * collection.filter({
      *  age:{ $gte: 18 }
      * });
      * @example
-     * collection.find({
+     * collection.filter({
      *  name: /Alejandro/,
      *  skills:{
      *      $contains: "Liberty"
@@ -434,11 +228,11 @@ export default class Collection<I extends IObject = IObject> {
      *  }
      * });
      */
-    public find(query: Query): Collection<I>
-    public find(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
-    public find(handler: any) {
-        return this.collect(this.items.filter(typeof handler === 'function' ? handler : (
-            typeof (handler ?? 0) === 'object' ? new QueryConstructor(handler) : (() => false)
+    public filter(query: Query<M>): Collection<I, M>
+    public filter(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I, M>
+    public filter(handler: any) {
+        return this.collect(super.filter(typeof handler === 'function' ? handler : (
+            typeof (handler ?? 0) === 'object' ? this.query(handler) : () => false
         )))
     }
 
@@ -454,11 +248,15 @@ export default class Collection<I extends IObject = IObject> {
      * @example
      * collection.first() // {}
      */
-    public first(): I | null
-    public first(query: Query): I | null
-    public first(iterator: (item: I, index: number, arr: I[]) => boolean): I | null
+    public first(): I | undefined
+    public first(query: Query<M>): I | undefined
+    public first(iterator: (item: I, index: number, arr: I[]) => boolean): I | undefined
     public first(handler?: any) {
-        return (handler === undefined ? this.items : this.find(handler).all())[0] as I
+        return super.find(handler === undefined ? () => true : (
+            typeof handler === 'function' ? handler : (
+                typeof (handler ?? 0) === 'object' ? this.query(handler) : () => false
+            )
+        ))
     }
 
     /**
@@ -478,8 +276,10 @@ export default class Collection<I extends IObject = IObject> {
      * //   name: 'Arcaelas Insiders',
      * // }
     */
-    public forget(...keys: string[] | string[][]): Collection {
-        this.items = this.items.map(item => omit(item, ...keys)) as any[]
+    public forget(...keys: string[] | string[][]): this {
+        const items = super.map(item => omit(item, ...keys)) as any[]
+        super.splice(0, this.length)
+        super.push(...items)
         return this
     }
 
@@ -590,22 +390,7 @@ export default class Collection<I extends IObject = IObject> {
     public groupBy(key: string): Dictionary<I[]>
     public groupBy(iterator: ((item: I, index: number, arr: I[]) => (string | number))): Dictionary<I[]>
     public groupBy(handler: any) {
-        return groupBy<I>(this.items, handler);
-    }
-
-    /**
-     * @description The join method joins the collection's values with a string.
-     * @example
-     * collection.join('name', ',', 'and');
-     * // 'Arcaelas Insiders, Collection Item Name and Other Item name.'
-     */
-    public join(key: string | ((item: I, index: number, arr: I[]) => any)): string;
-    public join(key: string, glue: string, union?: string): string;
-    public join(key: string, ...props: any[]) {
-        const [glue = ",", union = glue] = props
-        return this.items.map(
-            typeof key === "string" ? item => get(item, key) : key
-        ).reduce((str, value, _index, arr) => str + (_index ? (_index === arr.length - 1 ? `${glue} ` : ` ${union} `) : "") + value, "")
+        return groupBy<I>(this, handler);
     }
 
     /**
@@ -616,15 +401,15 @@ export default class Collection<I extends IObject = IObject> {
      *     return item.timestamp > Date.now(); // Last item
      * });
      */
-    public last(): I | null
-    public last(query: Query): I | null
-    public last(iterator: (item: I, index: number, arr: I[]) => boolean): I | null
+    public last(): I | undefined
+    public last(query: Query<M>): I | undefined
+    public last(iterator: (item: I, index: number, arr: I[]) => boolean): I | undefined
     public last(handler?: any) {
-        return handler === undefined ? this.items[this.items.length - 1] : (
-            typeof handler === 'function' ? this.items.findLast(handler) : (
-                typeof (handler ?? 0) === 'object' ? this.find(handler as Query).all().pop() : null
+        return this.findLast(handler === undefined ? () => true : (
+            typeof handler === 'function' ? handler : (
+                typeof (handler ?? 0) === 'object' ? this.query(handler) : () => false
             )
-        )
+        ))
     }
 
     /**
@@ -638,18 +423,7 @@ export default class Collection<I extends IObject = IObject> {
      * collection.some(item=> item.id);
      */
     public macro(key: string, handler: Bind<this, Noop<any[], any>>): this {
-        return Collection.macro.call(this, key, handler as any) as this
-    }
-
-    /**
-     * @description The map method iterates through the collection and passes each value to the given callback.
-     * The callback is free to modify the item and return it, thus forming a new collection of modified items
-     * @example
-     * collection.map(item=> item.name.toUpperCase());
-     * // ["Alejandro","Reyes","Arcaelas"]
-     */
-    public map<H extends (item: I, index: number, arr: I[]) => any>(handler: H): ReturnType<H>[] {
-        return this.items.map(handler);
+        return Collection.macro.call(this, key, handler as any) as any
     }
 
     /**
@@ -667,7 +441,7 @@ export default class Collection<I extends IObject = IObject> {
      */
     public max(key: string): number {
         if (typeof key !== 'string') throw new Error("type/string");
-        return Math.max(...this.items.map(item => get(item, key, 0)));
+        return Math.max(...super.map(item => get(item, key, 0)));
     }
 
     /**
@@ -685,7 +459,7 @@ export default class Collection<I extends IObject = IObject> {
      */
     public min(key: string): number {
         if (typeof key !== 'string') throw new Error("type/string");
-        return Math.min(...this.items.map(item => get(item, key, 0)));
+        return Math.min(...super.map(item => get(item, key, 0)));
     }
 
     /**
@@ -719,11 +493,11 @@ export default class Collection<I extends IObject = IObject> {
      *  }
      * });
      */
-    public not(query: Query): Collection<I>
-    public not(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I>
+    public not(query: Query<M>): Collection<I, M>
+    public not(iterator: (item: I, index: number, arr: I[]) => boolean): Collection<I, M>
     public not(handler: any) {
-        return this.collect(this.items.filter(typeof handler === 'function' ? handler : (
-            typeof (handler ?? 0) === 'object' ? new QueryConstructor({ $not: handler } as Query) : (() => false)
+        return this.collect(super.filter(typeof handler === 'function' ? (...a) => !handler(...a) : (
+            typeof (handler ?? 0) === 'object' ? this.query({ $not: handler }) : (() => false)
         )))
     }
 
@@ -740,30 +514,11 @@ export default class Collection<I extends IObject = IObject> {
      * }
      */
     public paginate(page: number = 1, perPage: number = 20): { items: I[], prev: number | false, next: number | false } {
-        const chunks = this.chunk(perPage)
-        const pageIndex = Math.max(0, page - 1)
         return {
-            items: chunks[pageIndex] || [],
-            prev: pageIndex <= 0 ? false : pageIndex,
-            next: chunks.length > pageIndex + 1 ? pageIndex + 2 : false,
+            items: super.slice((page - 1) * perPage, perPage * page),
+            prev: page <= 1 ? false : page - 1,
+            next: this.length > page * perPage ? page + 1 : false,
         };
-    }
-
-    /**
-     * @description
-     * Removes the last element from an collection and returns it.
-     * If the collection is empty, undefined is returned and the collection is not modified.
-     */
-    public pop(): I | undefined {
-        return this.items.pop();
-    }
-
-    /**
-     * @description
-     * Appends new elements to the end of an collection, and returns the new length of the collection.
-     */
-    public push(...items: I[]): number {
-        return this.items.push(...items);
     }
 
     /**
@@ -771,24 +526,7 @@ export default class Collection<I extends IObject = IObject> {
      * Get random elements, with the argument "length" the number of elements is indicated.
      */
     public random(length: number = Infinity): I[] {
-        return this.items.sort(() => Math.floor(Math.random() * 0.5)).slice(0, length);
-    }
-
-    /**
-     * @description Calls the specified callback function for all the elements in an collection. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
-     * @param callbackfn A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the collection.
-     * @param initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an collection value.
-     */
-    public reduce<H extends ((current?: C, item?: I, index?: number) => any), C extends any>(callbackfn: H, initialValue: C): C {
-        return this.items.reduce(callbackfn, initialValue) as C;
-    }
-
-    /**
-     * @description Removes the first element from an collection and returns it.
-     * @description If the collection is empty, undefined is returned and the collection is not modified.
-     */
-    public shift(): undefined | I {
-        return this.items.shift();
+        return super.sort(() => Math.floor(Math.random() * 0.5)).slice(0, length);
     }
 
     /**
@@ -796,52 +534,29 @@ export default class Collection<I extends IObject = IObject> {
      * This method set items order as random.
      * This method mutate collection, if you wan't mutate collection, must be call {@link Collection.random}
      */
-    public shuffle(): this {
-        this.items = this.items.sort(() => Math.floor(Math.random() * 0.5))
+    public shuffle() {
+        const items = super.sort(() => Math.floor(Math.random() * 0.5))
+        super.splice(0, this.length)
+        super.push(...items)
         return this;
-    }
-
-    /**
-     * @description
-     * Returns a copy of a section of an collection.
-     * For both start and end, a negative index can be used to indicate an offset from the end of the collection.
-     * For example, -2 refers to the second to last element of the collection.
-     * @param start The beginning index of the specified portion of the collection.
-     * If start is undefined, then the slice begins at index 0.
-     * @param end The end index of the specified portion of the collection. This is exclusive of the element at the index 'end'.
-     * If end is undefined, then the slice extends to the end of the collection.
-     */
-    public slice(start: number, end: number = Infinity): Collection<I> {
-        return this.collect(this.items.slice(start, end));
     }
 
     /**
      * @description
      * Sort the elements of the collection (This method mutates the collection).
      */
-    public sort(key: string, direction?: "asc" | "desc"): Collection<I>
-    public sort(iterator: (a: I, b: I) => number): Collection<I>
-    public sort(handler, ...dir): Collection<I> {
-        return this.collect(
-            this.items.sort(typeof handler === "function" ? handler : (current, next) => {
-                next = get(next, handler, undefined) as any;
-                current = get(current, handler, undefined) as any;
-                return current === undefined ? 0 : (next === undefined ? (dir[0] === "asc" ? 1 : -1) : (
-                    (current > next ? 1 : -1) * (dir[0] === 'asc' ? 1 : -1)
-                ));
-            })
-        )
-    }
-
-    /**
-     * @description
-     * Removes elements from an collection and, if necessary, inserts new elements in their place, returning the deleted elements.
-     * @param start The zero-based location in the collection from which to start removing elements.
-     * @param deleteCount The number of elements to remove.
-     * @returns An collection containing the elements that were deleted.
-     */
-    public splice(start: number, deleteCount: number, ...items: IObject[]): Collection<I> {
-        return this.collect(this.items.splice(start, deleteCount, ...items as any))
+    public sort(key?: string): this
+    public sort(key: string, direction: "asc" | "desc"): this
+    public sort(compareFn: ((a: I, b: I) => number)): this
+    public sort(...args: any[]) {
+        const [handler, ...dir] = args
+        return super.sort(typeof handler === 'function' ? handler : (current, next) => {
+            next = get(next, handler, undefined) as any;
+            current = get(current, handler, undefined) as any;
+            return current === undefined ? 0 : (next === undefined ? (dir[0] === "asc" ? 1 : -1) : (
+                (current > next ? 1 : -1) * (dir[0] === 'asc' ? 1 : -1)
+            ));
+        })
     }
 
     /**
@@ -852,7 +567,7 @@ export default class Collection<I extends IObject = IObject> {
      */
     public stringify(replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
     public stringify(...args: any[]) {
-        return JSON.stringify(this.items, ...args)
+        return JSON.stringify(this, ...args)
     }
 
     /**
@@ -864,7 +579,7 @@ export default class Collection<I extends IObject = IObject> {
     public sum(key: string): number;
     public sum<H extends (item: I, index: number, arr: I[]) => number>(iterator: H): number;
     public sum(handler) {
-        return this.items.map(typeof handler === "function" ? handler : item => get(item, handler))
+        return super.map(typeof handler === "function" ? handler : item => get(item, handler))
             .filter((e: any) => !isNaN(e))
             .reduce((a, b: any) => a + b, 0)
     }
@@ -888,46 +603,40 @@ export default class Collection<I extends IObject = IObject> {
      * //   { name: 'Galaxy S6', brand: 'Samsung', type: 'phone' },
      * // ]
      */
-    public unique(key: string): Collection<I>
-    public unique(iterator: (item: I, index: number, arr: I[]) => any): Collection<I>
+    public unique(key: string): Collection<I, M>
+    public unique(iterator: (item: I, index: number, arr: I[]) => any): Collection<I, M>
     public unique(handler: any) {
-        return this.collect(uniqBy(this.items, handler));
-    }
-
-    /**
-     * @description
-     * Inserts new elements at the start of an collection, and returns the new length of the collection.
-     */
-    public unshift(...items: I[]): number {
-        return this.items.unshift(...items);
+        return this.collect(uniqBy(this, handler));
     }
 
     /**
      * @description
      * Updates information for items that match a specific or general filter expression.
      * @example
-     * // set all "item.status" to "false"
-     * collection.update({ status: false })
+     * // Simple matches
+     * // Update all elements that "online" field is false
+     * // Add or replace "deletedAt" field with "new Date()"
+     * collection.update({ online: false }, { deletedAt: new Date() })
      * 
-     * // Filtering
-     * collection.update({
-     *  expireAt: { 
-     *      $lte: new Date() // where expireAt is past
-     *  }
+     * @example
+     * // Most common
+     * collect.update({
+     *  email: /gmail\.com$/g // all items that email is Gmail Host
      * }, {
-     *  online: false // Set online to false
+     *  email: null, // Set current email to null
+     *  prevEmail: "${email}" // Save email in this field
      * })
      */
-    public update<T = I>(set: T): { before: I, after: I }[]
-    public update<T = I>(where: Query, set: T): { before: I, after: I }[]
+    public update<T = I>(set: T): number
+    public update<T = I>(where: Query<M>, set: T): number
     public update(...args: any[]) {
-        let output: any[] = [],
-            set = args.length === 1 ? args[0] : args[1],
-            where = args.length === 1 ? () => true : new QueryConstructor(args[0])
-        for (const item of this.items)
-            if (where(item))
-                output.push({ before: clone(item), after: merge(item, set) })
-        return output
+        let count = 0,
+            set = source(args.length === 1 ? args[0] : args[1]),
+            where = args.length === 1 ? () => true : this.query(args[0])
+        const items = super.map(item => where(item) ? merge(item, set(item), count++) : item)
+        super.splice(0, this.length)
+        super.push(...items)
+        return count
     }
 
     /**
@@ -954,15 +663,15 @@ export default class Collection<I extends IObject = IObject> {
      * @example
      * collection.where('price', '>=', 100);
      */
-    public where(key: string, value: Inmutables): Collection<I>;
-    public where(key: string, operator: Operator, value: Inmutables): Collection<I>;
-    public where(...props: any[]): Collection<I> {
+    public where(key: string, value: Inmutables): Collection<I, M>;
+    public where(key: string, operator: Operator, value: Inmutables): Collection<I, M>;
+    public where(...props: any[]) {
         let [key, operator, value] = props;
         value = props.length >= 3 ? value : operator
-        operator = props.length >= 3 ? operator : "$eq"
-        if (!(operator in alias))
+        operator = props.length >= 3 ? alias[operator] : "$eq"
+        if (!operator)
             throw new Error("Unexpected value for the search operator.")
-        return this.find({ [key]: { [operator]: value } } as any)
+        return this.filter({ [key]: { [operator]: value } } as any)
     }
 
     /**
@@ -989,17 +698,18 @@ export default class Collection<I extends IObject = IObject> {
      * @example
      * collection.whereNot('price', '>=', 100);
      */
-    public whereNot(key: string, value: Inmutables): Collection<I>;
-    public whereNot(key: string, operator: Operator, value: Inmutables): Collection<I>;
-    public whereNot(...props: any[]): Collection<I> {
+    public whereNot(key: string, value: Inmutables): Collection<I, M>;
+    public whereNot(key: string, operator: Operator, value: Inmutables): Collection<I, M>;
+    public whereNot(...props: any[]) {
         let [key, operator, value] = props;
         value = props.length >= 3 ? value : operator
-        operator = props.length >= 3 ? operator : "$eq"
-        if (!(operator in alias))
+        operator = props.length >= 3 ? alias[operator] : "$eq"
+        if (!operator)
             throw new Error("Unexpected value for the search operator.")
-        return this.find({ [key]: { $not: { [operator]: value } } } as any)
+        return this.filter({ $not: { [key]: { [operator]: value } } } as any)
     }
 
 }
+
 
 export { Collection }
