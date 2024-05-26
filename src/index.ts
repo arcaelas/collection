@@ -15,7 +15,7 @@ export enum alias {
 }
 
 
-export default class Collection<I extends IObject = IObject, M = {}> extends Array<I> {
+export default class Collection<I, M = {}> extends Array<I> {
 
     [K: string]: any
     private readonly query: (query: Query<M>) => (item: Partial<I>) => boolean = null as any
