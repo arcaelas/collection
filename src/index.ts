@@ -26,7 +26,7 @@ export enum alias {
 }
 
 export default class Collection<
-  T extends JsonObject = JsonObject,
+  T = any,
   V extends JsonObject = JsonObject
 > extends Array<T> {
   [K: string]: any;
@@ -314,7 +314,9 @@ export default class Collection<
    * // }
    */
   public forget(...keys: string[] | string[][]): this {
-    const items = super.map((item) => omit(item, ...keys)) as any[];
+    const items = super.map((item) =>
+      omit(item as JsonObject, ...keys)
+    ) as any[];
     super.splice(0, this.length);
     super.push(...items);
     return this;
@@ -486,7 +488,7 @@ export default class Collection<
    */
   public max(key: string): number {
     if (typeof key !== "string") throw new Error("type/string");
-    return Math.max(...super.map((item) => get(item, key, 0)));
+    return Math.max(...super.map((item) => get(item as JsonObject, key, 0)));
   }
 
   /**
@@ -504,7 +506,7 @@ export default class Collection<
    */
   public min(key: string): number {
     if (typeof key !== "string") throw new Error("type/string");
-    return Math.min(...super.map((item) => get(item, key, 0)));
+    return Math.min(...super.map((item) => get(item as JsonObject, key, 0)));
   }
 
   /**
@@ -609,9 +611,9 @@ export default class Collection<
     return super.sort(
       typeof handler === "function"
         ? handler
-        : (current, next) => {
-            next = get(next, handler, undefined) as any;
-            current = get(current, handler, undefined) as any;
+        : (current: any, next: any) => {
+            next = get(next as JsonObject, handler, undefined) as any;
+            current = get(current as JsonObject, handler, undefined) as any;
             return current === undefined
               ? 0
               : next === undefined
@@ -650,7 +652,9 @@ export default class Collection<
   public sum(handler) {
     return super
       .map(
-        typeof handler === "function" ? handler : (item) => get(item, handler)
+        typeof handler === "function"
+          ? handler
+          : (item) => get(item as JsonObject, handler)
       )
       .filter((e: any) => !isNaN(e))
       .reduce((a, b: any) => a + b, 0);
@@ -708,7 +712,7 @@ export default class Collection<
       set = source(args.length === 1 ? args[0] : args[1]),
       where = args.length === 1 ? () => true : this.query(args[0]);
     const items = super.map((item) =>
-      where(item) ? merge(item, set(item), count++) : item
+      where(item) ? merge(item, set(item as JsonObject), count++) : item
     );
     super.splice(0, this.length);
     super.push(...items);
