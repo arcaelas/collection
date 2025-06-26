@@ -1,24 +1,60 @@
-coleccion:
+colección:
   label: Colección
   permalink: /coleccion
   description: Funcionalidades del núcleo de la librería Arcaelas Collection
+
+# Redirecciona a la etiqueta normalizada con tilde
+coleccion:
+  label: Colección
+  permalink: /coleccion-alt
+  description: Funcionalidades del núcleo de la librería Arcaelas Collection
+
+introducción:
+  label: Introducción
+  permalink: /introduccion
+  description: Artículos introductorios sobre Arcaelas Collection
 
 typescript:
   label: TypeScript
   permalink: /typescript
   description: Artículos sobre el uso de TypeScript con Arcaelas Collection
 
-filtracion:
-  label: Filtración
-  permalink: /filtracion
+filtrado:
+  label: Filtrado
+  permalink: /filtrado
   description: Métodos y técnicas para filtrar datos con Arcaelas Collection
 
-transformacion:
+búsqueda:
+  label: Búsqueda
+  permalink: /busqueda
+  description: Técnicas de búsqueda en colecciones de datos
+
+transformación:
   label: Transformación
   permalink: /transformacion
   description: Manipulación y transformación de datos en colecciones
+
+mapeo:
+  label: Mapeo
+  permalink: /mapeo
+  description: Técnicas para mapear y transformar datos
 
 casos-uso:
   label: Casos de Uso
   permalink: /casos-uso
   description: Ejemplos prácticos de implementación de Arcaelas Collection
+
+patrones:
+  label: Patrones
+  permalink: /patrones
+  description: Patrones de diseño y arquitectura con Arcaelas Collection
+
+rendimiento:
+  label: Rendimiento
+  permalink: /rendimiento
+  description: Optimización y análisis de rendimiento con Arcaelas Collection
+
+comparativa:
+  label: Comparativa
+  permalink: /comparativa
+  description: Análisis comparativo entre Arcaelas Collection y otras librerías

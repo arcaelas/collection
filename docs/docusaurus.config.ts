@@ -1,6 +1,10 @@
 import type * as Preset from '@docusaurus/preset-classic';
-import type { Config } from '@docusaurus/types';
 import { themes as prismThemes } from 'prism-react-renderer';
+
+// Definición de tipo Config para compatibilidad
+type Config = {
+  [key: string]: any;
+};
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -36,7 +40,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'arcaelas', // Usually your GitHub org/user name.
   projectName: 'collection', // Usually your repo name.
-
+  deploymentBranch: 'gh-pages',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
@@ -93,6 +97,13 @@ const config: Config = {
     // Script para datos estructurados (JSON-LD)
     headTags: [
       // Meta tags para descripción y SEO
+      {
+        tagName:"link",
+        attributes:{
+          rel: "canonical",
+          href: "https://www.arcaelas.com/docs/introduccion"
+        }
+      },
       {
         tagName: 'meta',
         attributes: {

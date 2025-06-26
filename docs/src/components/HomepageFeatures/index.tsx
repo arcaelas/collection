@@ -32,16 +32,10 @@ type FeatureItem = {
   href?: string;
 };
 
-// Importar las imágenes
-// Versiones PNG (fallback)
-const CollectionImagePng = require('@site/static/img/foot-card-1.svg').default;
-const TypeImagePng = require('@site/static/img/foot-card-2.svg').default;
-const SpeedImagePng = require('@site/static/img/foot-card-3.svg').default;
-
-// Versiones WebP (optimizadas)
-const CollectionImageWebp = require('@site/static/img/webp/foot-card-1.webp').default;
-const TypeImageWebp = require('@site/static/img/webp/foot-card-2.webp').default;
-const SpeedImageWebp = require('@site/static/img/webp/foot-card-3.webp').default;
+// Importaciones de imágenes mediante require para compatibilidad con Docusaurus
+const CollectionImage = require('@site/static/img/webp/foot-card-1.webp').default;
+const TypeImage = require('@site/static/img/webp/foot-card-2.webp').default;
+const SpeedImage = require('@site/static/img/webp/foot-card-3.webp').default;
 
 const FeatureList: FeatureItem[] = [
   {
@@ -84,67 +78,37 @@ function Feature({ title, description, href }: FeatureItem) {
     <>
       <div className="text--center">
         {isFirstFeature && (
-          <picture>
-            <source 
-              srcSet={`${CollectionImageWebp} 1x, ${CollectionImageWebp} 2x`} 
-              type="image/webp" 
-            />
-            <source 
-              srcSet={`${CollectionImagePng} 1x, ${CollectionImagePng} 2x`} 
-              type="image/png" 
-            />
-            <img 
-              src={CollectionImagePng}
-              srcSet={`${CollectionImagePng} 1x, ${CollectionImagePng} 2x`}
-              alt="API potente para manipulación de colecciones de datos" 
-              className={styles.featureImage}
-              loading="lazy"
-              width="1024"
-              height="1024"
-            />
-          </picture>
+          <img 
+            src={CollectionImage}
+            srcSet={`${CollectionImage} 1x, ${CollectionImage} 2x`}
+            alt="API potente para manipulación de colecciones de datos" 
+            className={styles.featureImage}
+            loading="lazy"
+            width="1024"
+            height="1024"
+          />
         )}
         {isSecondFeature && (
-          <picture>
-            <source 
-              srcSet={`${TypeImageWebp} 1x, ${TypeImageWebp} 2x`} 
-              type="image/webp" 
-            />
-            <source 
-              srcSet={`${TypeImagePng} 1x, ${TypeImagePng} 2x`} 
-              type="image/png" 
-            />
-            <img 
-              src={TypeImagePng}
-              srcSet={`${TypeImagePng} 1x, ${TypeImagePng} 2x`}
-              alt="Tipado fuerte para desarrollo seguro" 
-              className={styles.featureImage}
-              loading="lazy"
-              width="1024"
-              height="1024"
-            />
-          </picture>
+          <img 
+            src={TypeImage}
+            srcSet={`${TypeImage} 1x, ${TypeImage} 2x`}
+            alt="Tipado fuerte para desarrollo seguro" 
+            className={styles.featureImage}
+            loading="lazy"
+            width="1024"
+            height="1024"
+          />
         )}
         {isThirdFeature && (
-          <picture>
-            <source 
-              srcSet={`${SpeedImageWebp} 1x, ${SpeedImageWebp} 2x`} 
-              type="image/webp" 
-            />
-            <source 
-              srcSet={`${SpeedImagePng} 1x, ${SpeedImagePng} 2x`} 
-              type="image/png" 
-            />
-            <img 
-              src={SpeedImagePng}
-              srcSet={`${SpeedImagePng} 1x, ${SpeedImagePng} 2x`}
-              alt="Librería ligera y de alto rendimiento" 
-              className={styles.featureImage}
-              loading="lazy"
-              width="1024"
-              height="1024"
-            />
-          </picture>
+          <img 
+            src={SpeedImage}
+            srcSet={`${SpeedImage} 1x, ${SpeedImage} 2x`}
+            alt="Librería ligera y de alto rendimiento" 
+            className={styles.featureImage}
+            loading="lazy"
+            width="1024"
+            height="1024"
+          />
         )}
       </div>
       <div className="text--center">
