@@ -44,7 +44,7 @@ elif git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || false; th
   yarn docs:build
   git checkout "${DOCS}" --
   git branch --set-upstream-to=origin/${DOCS} ${DOCS}
-  find -mindepth 2 ! -wholename "./docs/build*" ! -wholename "./.git*" -exec rm -rf "{}" +
+  find -mindepth 2 ! -wholename "./docs/build*" ! -wholename "./.git*" -exec rm -rf "{}" + || true
 
   mv docs .tmp
   mv .tmp/build/* .
