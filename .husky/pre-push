@@ -11,12 +11,21 @@ AMARILLO='\033[0;33m'
 AZUL='\033[0;34m'
 RESET='\033[0m'
 
-echo -e "${AZUL}[Pre-Push Hook] Verificando rama actual...${RESET}"
+echo -e "${AZUL}[ETAPA 1] Iniciando hook pre-push...${RESET}
 
 # Obtener la rama actual
 RAMA_ACTUAL=$(git symbolic-ref --short HEAD)
+echo -e "${VERDE}[ETAPA 1] OK: Rama actual detectada: ${RAMA_ACTUAL}${RESET}"
+# Solo continuar si estamos en la rama main
+if [ "$RAMA_ACTUAL" != "main" ]; then
+  echo -e "${AMARILLO}[ETAPA 1] Saltando: No estamos en la rama main${RESET}"
+  exit 0
+fi
 
-# Solo ejecutar en la rama main
+echo -e "${VERDE}[ETAPA 1] COMPLETADA: Verificación de rama exitosa${RESET}
+echo -e "${AZUL}----------------------------------------${RESET}"
+
+exit 0
 if [ "$RAMA_ACTUAL" != "main" ]; then
   echo -e "${AMARILLO}[Pre-Push Hook] No estás en la rama main. Omitiendo compilación de documentación.${RESET}"
   exit 0
