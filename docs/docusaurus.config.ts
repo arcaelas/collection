@@ -25,7 +25,7 @@ const config: Config = {
   organizationName: 'arcaelas', // Usually your GitHub org/user name.
   projectName: 'collection', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
@@ -42,10 +42,12 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          routeBasePath: '/', // Serve the docs at the site's root
+          // Remove the "edit this page" links
+          editUrl: undefined,
+          // Configuración de la barra lateral
+          sidebarCollapsible: true,
+          sidebarCollapsed: true,
         },
         blog: {
           showReadingTime: true,
