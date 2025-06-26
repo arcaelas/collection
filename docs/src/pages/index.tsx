@@ -92,10 +92,13 @@ function HomepageHeader() {
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   
+  // Creamos una descripción SEO optimizada para la página principal
+  const seoDescription = 'Arcaelas Collection: Manipula colecciones de datos en TypeScript con filtrado avanzado, transformaciones y operaciones encadenadas. Librería ligera, con tipado fuerte y alto rendimiento.';
+  
   return (
     <Layout
-      title={siteConfig.title}
-      description={siteConfig.tagline}>
+      title={`${siteConfig.title} - Manipulación de colecciones con tipado fuerte`}
+      description={seoDescription}>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

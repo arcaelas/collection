@@ -6,7 +6,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
   title: 'Arcaelas Collection',
-  tagline: 'Herramientas de desarrollo de alta calidad para aplicaciones modernas',
+  tagline: 'Librería TypeScript para manipulación eficiente y tipada de colecciones de datos',
   favicon: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -19,6 +19,18 @@ const config: Config = {
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  trailingSlash: true, // Usar URLs consistentes con barra al final
+  
+  // Configuración de CDN para recursos estáticos
+  staticDirectories: ['static'],
+  scripts: [
+    // Carga diferida de scripts no críticos
+    {
+      src: 'https://cdn.jsdelivr.net/npm/prism-react-renderer@2.3.0/dist/index.min.js',
+      async: true,
+      defer: true,
+    },
+  ],
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -76,13 +88,164 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
-    metadata:[
+    // Imagen para compartir en redes sociales
+    image: 'img/arcaelas-social-card.jpg',
+    // Script para datos estructurados (JSON-LD)
+    headTags: [
+      // Meta tags para descripción y SEO
       {
-        name:"google-adsense-account",
-        content:"ca-pub-2819730910015409"
-      }
+        tagName: 'meta',
+        attributes: {
+          name: 'description',
+          content: 'Arcaelas Collection: librería TypeScript para manipulación eficiente de colecciones con filtrado avanzado, transformación de datos y tipado fuerte.',
+        },
+      },
+      {
+        tagName: 'meta',
+        attributes: {
+          property: 'og:description',
+          content: 'Una biblioteca JavaScript para manipulación avanzada de colecciones de datos con una API fluida y expresiva.',
+        },
+      },
+      {
+        tagName: 'meta',
+        attributes: {
+          property: 'og:title',
+          content: 'Arcaelas Collection | Manipulación de datos en JavaScript',
+        },
+      },
+      {
+        tagName: 'meta',
+        attributes: {
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+      },
+      {
+        tagName: 'meta',
+        attributes: {
+          name: 'twitter:title',
+          content: 'Arcaelas Collection | Potente API para colecciones en JavaScript',
+        },
+      },
+      {
+        tagName: 'meta',
+        attributes: {
+          name: 'twitter:description',
+          content: 'Manipula colecciones de datos en JavaScript con una API fluida y tipado fuerte. Ideal para filtrado, ordenamiento y transformación de datos.',
+        },
+      },
+      // Preload recursos críticos para reducir CLS
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: '/img/webp/banner.webp',
+          as: 'image',
+          type: 'image/webp',
+          fetchpriority: 'high',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preload',
+          href: '/img/webp/foot-card-1.webp',
+          as: 'image',
+          type: 'image/webp',
+        },
+      },
+      // Optimización para fuentes - mejora FCP y LCP
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'preconnect',
+          href: 'https://fonts.googleapis.com',
+          crossorigin: 'anonymous',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'dns-prefetch',
+          href: 'https://fonts.googleapis.com',
+        },
+      },
+      // Prefetch para rutas comunes - mejora la navegación
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'prefetch',
+          href: '/docs/api/filtrado-busqueda',
+        },
+      },
+      {
+        tagName: 'link',
+        attributes: {
+          rel: 'prefetch',
+          href: '/docs/api/transformacion-mapeo',
+        },
+      },
+      // JSON-LD para descripciones estructuradas
+      {
+        tagName: 'script',
+        attributes: {
+          type: 'application/ld+json',
+        },
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          'name': 'Arcaelas Collection',
+          'description': 'Una potente librería TypeScript para trabajar con colecciones de datos que ofrece filtrado avanzado, transformaciones y operaciones encadenadas con tipado fuerte.',
+          'applicationCategory': 'DeveloperApplication',
+          'operatingSystem': 'Any',
+          'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+          },
+          'author': {
+            '@type': 'Organization',
+            'name': 'Arcaelas Insiders, Inc.',
+            'url': 'https://github.com/arcaelas'
+          },
+          'softwareVersion': '1.0.0',
+          'fileSize': '50KB',
+          'programmingLanguage': 'TypeScript'
+        }),
+      },
+    ],
+    metadata: [
+      {
+        name: "keywords",
+        content: "typescript, colección, filtrado, transformación, manipulación datos, javascript, librería, tipado fuerte"
+      },
+      {
+        name: "author",
+        content: "Arcaelas Insiders, Inc."
+      },
+      {
+        name: "google-adsense-account",
+        content: "ca-pub-2819730910015409"
+      },
+      // Open Graph básico
+      {
+        property: "og:type",
+        content: "website"
+      },
+      {
+        property: "og:locale",
+        content: "es_ES"
+      },
+      // Twitter Cards
+      {
+        name: "twitter:card",
+        content: "summary_large_image"
+      },
+      {
+        name: "twitter:site",
+        content: "@arcaelas"
+      },
     ],
     navbar: {
       title: 'Arcaelas Collection',

@@ -33,9 +33,15 @@ type FeatureItem = {
 };
 
 // Importar las imágenes
-const CollectionImage = require('@site/static/img/foot-card-1.png').default;
-const TypeImage = require('@site/static/img/foot-card-2.png').default;
-const SpeedImage = require('@site/static/img/foot-card-3.png').default;
+// Versiones PNG (fallback)
+const CollectionImagePng = require('@site/static/img/foot-card-1.png').default;
+const TypeImagePng = require('@site/static/img/foot-card-2.png').default;
+const SpeedImagePng = require('@site/static/img/foot-card-3.png').default;
+
+// Versiones WebP (optimizadas)
+const CollectionImageWebp = require('@site/static/img/webp/foot-card-1.webp').default;
+const TypeImageWebp = require('@site/static/img/webp/foot-card-2.webp').default;
+const SpeedImageWebp = require('@site/static/img/webp/foot-card-3.webp').default;
 
 const FeatureList: FeatureItem[] = [
   {
@@ -78,28 +84,67 @@ function Feature({ title, description, href }: FeatureItem) {
     <>
       <div className="text--center">
         {isFirstFeature && (
-          <img 
-            src={CollectionImage} 
-            alt={title} 
-            className={styles.featureImage}
-            loading="lazy"
-          />
+          <picture>
+            <source 
+              srcSet={`${CollectionImageWebp} 1x, ${CollectionImageWebp} 2x`} 
+              type="image/webp" 
+            />
+            <source 
+              srcSet={`${CollectionImagePng} 1x, ${CollectionImagePng} 2x`} 
+              type="image/png" 
+            />
+            <img 
+              src={CollectionImagePng}
+              srcSet={`${CollectionImagePng} 1x, ${CollectionImagePng} 2x`}
+              alt="API potente para manipulación de colecciones de datos" 
+              className={styles.featureImage}
+              loading="lazy"
+              width="1024"
+              height="1024"
+            />
+          </picture>
         )}
         {isSecondFeature && (
-          <img 
-            src={TypeImage} 
-            alt={title} 
-            className={styles.featureImage}
-            loading="lazy"
-          />
+          <picture>
+            <source 
+              srcSet={`${TypeImageWebp} 1x, ${TypeImageWebp} 2x`} 
+              type="image/webp" 
+            />
+            <source 
+              srcSet={`${TypeImagePng} 1x, ${TypeImagePng} 2x`} 
+              type="image/png" 
+            />
+            <img 
+              src={TypeImagePng}
+              srcSet={`${TypeImagePng} 1x, ${TypeImagePng} 2x`}
+              alt="Tipado fuerte para desarrollo seguro" 
+              className={styles.featureImage}
+              loading="lazy"
+              width="1024"
+              height="1024"
+            />
+          </picture>
         )}
         {isThirdFeature && (
-          <img 
-            src={SpeedImage} 
-            alt={title} 
-            className={styles.featureImage}
-            loading="lazy"
-          />
+          <picture>
+            <source 
+              srcSet={`${SpeedImageWebp} 1x, ${SpeedImageWebp} 2x`} 
+              type="image/webp" 
+            />
+            <source 
+              srcSet={`${SpeedImagePng} 1x, ${SpeedImagePng} 2x`} 
+              type="image/png" 
+            />
+            <img 
+              src={SpeedImagePng}
+              srcSet={`${SpeedImagePng} 1x, ${SpeedImagePng} 2x`}
+              alt="Librería ligera y de alto rendimiento" 
+              className={styles.featureImage}
+              loading="lazy"
+              width="1024"
+              height="1024"
+            />
+          </picture>
         )}
       </div>
       <div className="text--center">

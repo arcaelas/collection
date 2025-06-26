@@ -1,15 +1,25 @@
-import ThemedImage from '@theme/ThemedImage';
-import bannerLight from '@site/static/img/banner.png';
+import React from 'react';
 
 <div className="banner-container" style={{marginBottom: '2rem'}}>
-  <ThemedImage 
-    alt="Arcaelas Collection Banner"
-    sources={{
-      light: bannerLight,
-      dark: bannerLight,
-    }}
-    style={{width: '100%', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'}}
-  />
+  <picture>
+    <source 
+      srcSet="/img/webp/banner.webp" 
+      type="image/webp"
+    />
+    <source 
+      srcSet="/img/banner.png" 
+      type="image/png"
+    />
+    <img 
+      src="/img/banner.png" 
+      alt="Arcaelas Collection: librería TypeScript para manipulación eficiente de colecciones de datos" 
+      style={{width: '100%', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'}}
+      width="1536"
+      height="1024"
+      loading="eager" 
+      fetchpriority="high"
+    />
+  </picture>
 </div>
 
 # Características principales

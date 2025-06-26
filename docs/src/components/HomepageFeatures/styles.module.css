@@ -45,15 +45,16 @@
   width: 100%;
   max-width: 200px;
   height: auto;
-  border-radius: 8px;
+  border-radius: 12px;
   margin: 0 auto 1.5rem;
   display: block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--arc-transition);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .featureImage:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
 }
 
 .featureSvg:hover {
@@ -61,16 +62,29 @@
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
 }
 
+/* Variables para los gradientes y bordes unificados */
+:root {
+  --arc-gradient-light: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12), rgba(157, 23, 210, 0.08));
+  --arc-gradient-dark: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(124, 58, 237, 0.2), rgba(157, 23, 210, 0.15));
+  --arc-border-light: rgba(255, 255, 255, 0.12);
+  --arc-border-dark: rgba(255, 255, 255, 0.05);
+  --arc-shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --arc-shadow-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --arc-blur-effect: blur(10px);
+  --arc-radius: 1rem;
+  --arc-transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 /* Estilos para las tarjetas de características */
 .feature {
   height: 100%;
   padding: 2.5rem 2rem;
-  border-radius: 1rem;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  transition: all 0.3s ease;
+  border-radius: var(--arc-radius);
+  background: var(--arc-gradient-light);
+  backdrop-filter: var(--arc-blur-effect);
+  border: 1px solid var(--arc-border-light);
+  box-shadow: var(--arc-shadow-light);
+  transition: var(--arc-transition);
   position: relative;
   overflow: hidden;
   color: var(--ifm-heading-color);
@@ -94,6 +108,7 @@
 .feature:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+  border-color: rgba(124, 58, 237, 0.3);
 }
 
 .feature:hover::before {
@@ -102,9 +117,9 @@
 
 /* Ajustes para modo oscuro */
 [data-theme='dark'] .feature {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.15));
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: var(--arc-gradient-dark);
+  border: 1px solid var(--arc-border-dark);
+  box-shadow: var(--arc-shadow-dark);
 }
 
 [data-theme='dark'] .feature::before {
