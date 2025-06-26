@@ -52,7 +52,7 @@ elif git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || false; th
 
   git add .
   git commit -m "docs: actualizar documentación $(date +'%Y-%m-%d %H:%M:%S')"
-  git push origin ${DOCS}
+  git push origin ${DOCS} --force
   git checkout -q $BRANCH
   echo ""
 fi
