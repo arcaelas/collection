@@ -146,8 +146,13 @@ find . -mindepth 1 -not -path '*/\..*' -not -path './.git*' -exec rm -rf {} + 2>
 
 # Mover archivos compilados a la raíz
 info "Moviendo archivos compilados a la raíz..."
-cp -r docs/build/* . 2>/dev/null || true
-rm -rf docs/build 2>/dev/null || true
+if [ -d "docs/build" ]; then
+  cp -r docs/build/. . 2>/dev/null || true
+  rm -rf docs/build 2>/dev/null || true
+else
+  warning "No se encontró el directorio docs/build. La compilación puede haber fallado."
+  ls -la docs/
+fi
 
 # Asegurarse de que los archivos necesarios para GitHub Pages estén presentes
 touch .nojekyll
@@ -179,86 +184,3 @@ info "La documentación se ha publicado en la rama $RAMA_DOCS"
 info "Puedes ver la documentación en: https://arcaelas.github.io/collection/"
 
 exit 0
-
-# Guardar el hash del commit actual
-COMMIT_HASH=$(git rev-parse --short HEAD)
-COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-
-# Compilar la documentación
-echo -e "${AZUL}[Pre-Push Hook] Compilando documentación con yarn docs:build...${RESET}"
-yarn docs:build || {
-  echo -e "${ROJO}[Pre-Push Hook] Error al compilar la documentación. Abortando push.${RESET}"
-  exit 1
-}
-
-echo -e "${VERDE}[Pre-Push Hook] Documentación compilada exitosamente.${RESET}"
-
-# Guardar la rama actual
-RAMA_ORIGINAL=$RAMA_ACTUAL
-
-# Verificar si existe la rama docs
-RAMA_DOCS_EXISTE=$(git branch -a | grep -c "remotes/origin/docs")
-
-if [ "$RAMA_DOCS_EXISTE" -eq 0 ]; then
-  echo -e "${AZUL}[Pre-Push Hook] Creando rama docs...${RESET}"
-  git checkout --orphan docs
-else
-  echo -e "${AZUL}[Pre-Push Hook] Cambiando a rama docs...${RESET}"
-  git fetch origin docs
-  git checkout docs || {
-    git checkout -b docs
-  }
-fi
-
-# Guardar el archivo CNAME y .nojekyll si existen
-if [ -f "CNAME" ]; then
-  cp CNAME /tmp/CNAME_backup
-fi
-if [ -f ".nojekyll" ]; then
-  cp .nojekyll /tmp/nojekyll_backup
-fi
-
-# Eliminar todos los archivos excepto .git
-echo -e "${AZUL}[Pre-Push Hook] Limpiando rama docs...${RESET}"
-find . -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} \; 2>/dev/null
-
-# Copiar los archivos compilados a la raíz
-echo -e "${AZUL}[Pre-Push Hook] Copiando archivos compilados...${RESET}"
-cp -r docs/build/* . || {
-  echo -e "${ROJO}[Pre-Push Hook] Error al copiar archivos compilados. Volviendo a rama original...${RESET}"
-  git checkout $RAMA_ORIGINAL
-  exit 1
-}
-
-# Restaurar CNAME y .nojekyll
-if [ -f "/tmp/CNAME_backup" ]; then
-  mv /tmp/CNAME_backup CNAME
-else
-  echo "docs.arcaelas.com" > CNAME
-fi
-if [ -f "/tmp/nojekyll_backup" ]; then
-  mv /tmp/nojekyll_backup .nojekyll
-else
-  touch .nojekyll
-fi
-
-# Commit y push
-echo -e "${AZUL}[Pre-Push Hook] Haciendo commit de la documentación...${RESET}"
-git add -A
-git commit -m "docs: actualización de documentación desde commit ${COMMIT_HASH} - ${COMMIT_MESSAGE}" || {
-  echo -e "${AMARILLO}[Pre-Push Hook] No hay cambios para commit en docs.${RESET}"
-}
-
-# Push a la rama docs
-echo -e "${AZUL}[Pre-Push Hook] Publicando en rama docs...${RESET}"
-git push origin docs || {
-  echo -e "${ROJO}[Pre-Push Hook] Error al publicar en rama docs. Volviendo a rama original...${RESET}"
-  git checkout $RAMA_ORIGINAL
-  exit 1
-}
-
-# Volver a la rama original
-echo -e "${AZUL}[Pre-Push Hook] Volviendo a la rama original...${RESET}"
-git checkout $RAMA_ORIGINAL
-
-echo -e "${VERDE}[Pre-Push Hook] Documentación publicada exitosamente en la rama docs.${RESET}"
