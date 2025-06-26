@@ -82,22 +82,108 @@ info "ETAPA 2: Verificando cambios en la documentación..."
 # Obtener cambios en la carpeta docs
 CAMBIOS_DOCS=$(git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || true)
 
-if [ -z "$CAMBIOS_DOCS" ]; then
+if [ -z "$CAMBIOS_DOCS" ] && [ "$1" != "--force" ]; then
   success "No hay cambios en la documentación. No es necesario compilar."
   exit 0
 fi
 
-success "Se detectaron cambios en la documentación:"
-echo "$CAMBIOS_DOCS" | while read -r archivo; do
-  echo "  - $archivo"
-done
+if [ -n "$CAMBIOS_DOCS" ]; then
+  success "Se detectaron cambios en la documentación:"
+  echo "$CAMBIOS_DOCS" | while read -r archivo; do
+    echo "  - $archivo"
+  done
+fi
 
-info "Continuando con la compilación..."
+info "Iniciando proceso de compilación y publicación de la documentación..."
 
-# Terminar exitosamente (por ahora)
-success "ETAPA 2: Verificación de cambios completada"
+# ETAPA 3: Compilar la documentación
+info "ETAPA 3: Compilando documentación..."
+
+# Guardar la rama actual
+RAMA_ACTUAL=$(git symbolic-ref --short HEAD)
+RAMA_DOCS="gh-pages"  # Cambiado de 'docs' a 'gh-pages' para GitHub Pages
+
+# Instalar dependencias de docs si es necesario
+if [ ! -d "docs/node_modules" ]; then
+  info "Instalando dependencias de documentación..."
+  (cd docs && yarn install)
+fi
+
+# Compilar documentación
+info "Compilando documentación con 'yarn docs:build'..."
+if ! yarn docs:build; then
+  error "Error al compilar la documentación. Por favor, corrige los errores antes de continuar."
+fi
+
+# ETAPA 4: Publicar documentación
+info "ETAPA 4: Publicando documentación en la rama $RAMA_DOCS..."
+
+# Crear directorio temporal
+DIR_TEMP=$(mktemp -d)
+info "Directorio temporal creado: $DIR_TEMP"
+
+# Clonar el repositorio en el directorio temporal
+info "Clonando repositorio en directorio temporal..."
+git clone --branch $RAMA_DOCS --single-branch --depth 1 git@github.com:arcaelas/collection.git $DIR_TEMP 2>/dev/null || \
+  git clone --single-branch git@github.com:arcaelas/collection.git $DIR_TEMP
+
+# Cambiar al directorio temporal
+pushd $DIR_TEMP > /dev/null
+
+# Crear rama docs si no existe
+git checkout $RAMA_DOCS 2>/dev/null || (
+  info "La rama $RAMA_DOCS no existe, creándola..."
+  git checkout --orphan $RAMA_DOCS
+  git rm -rf . > /dev/null
+  echo "# Documentación de $RAMA_DOCS" > README.md
+  git add README.md
+  git commit -m "docs: inicializar rama $RAMA_DOCS"
+  git push -u origin $RAMA_DOCS
+)
+
+# Limpiar todo excepto .git
+info "Limpiando rama $RAMA_DOCS..."
+find . -mindepth 1 -not -path '*/\..*' -not -path './.git*' -exec rm -rf {} + 2>/dev/null || true
+
+# Copiar archivos compilados
+info "Copiando archivos compilados..."
+cp -r ../docs/build/* .
+
+# Asegurarse de que los archivos necesarios para GitHub Pages estén presentes
+touch .nojekyll
+
+# Hacer commit de los cambios
+git add .
+if git diff --cached --quiet; then
+  info "No hay cambios para publicar en la documentación."
+else
+  info "Haciendo commit de los cambios en la documentación..."
+  git commit -m "docs: actualizar documentación $(date +'%Y-%m-%d %H:%M:%S')"
+  
+  # Hacer push forzado a la rama docs
+  info "Subiendo cambios a la rama $RAMA_DOCS..."
+  git push origin $RAMA_DOCS --force
+  
+  success "Documentación publicada exitosamente en la rama $RAMA_DOCS"
+  info "Puedes ver la documentación en: https://arcaelas.github.io/collection/"
+fi
+
+# Volver al directorio original
+popd > /dev/null
+
+# Limpiar directorio temporal
+info "Limpiando directorio temporal..."
+rm -rf $DIR_TEMP
+
+# Volver a la rama original
+info "Volviendo a la rama original: $RAMA_ACTUAL"
+git checkout -q $RAMA_ACTUAL
+
+# Éxito
+success "✅ Proceso de documentación completado exitosamente!"
 info "----------------------------------------"
-info "PRUEBA COMPLETADA - El hook está funcionando correctamente"
+info "La documentación se ha publicado en la rama $RAMA_DOCS"
+info "Puedes ver la documentación en: https://arcaelas.github.io/collection/"
 
 exit 0
 
