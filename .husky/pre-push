@@ -1,7 +1,6 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
+#!/bin/sh
 # Hook de pre-push para compilar y publicar la documentación en la rama docs
+# Este hook se ejecuta antes de hacer push a cualquier rama
 # Autor: Miguel Alejandro
 # Fecha: 2025-06-26
 
