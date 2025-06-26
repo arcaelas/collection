@@ -5,7 +5,7 @@
  */
 
 /* Fuentes optimizadas con font-display:swap para reducir CLS */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Code+Pro:wght@400;500;600&display=swap&text=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:,.-_/()%&"');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Code+Pro:wght@400;500;600&display=swap&text=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:,.-_/()%');
 
 /* Variables CSS para la identidad visual y accesibilidad */
 :root {
