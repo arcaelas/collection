@@ -138,7 +138,7 @@ fi
 
 # Cambiar a la rama docs
 info "Cambiando a la rama $RAMA_DOCS..."
-git checkout $RAMA_DOCS
+git checkout -b $RAMA_DOCS origin/$RAMA_DOCS 2>/dev/null || git checkout $RAMA_DOCS --
 
 # Limpiar todo excepto .git
 info "Limpiando rama $RAMA_DOCS..."
