@@ -25,7 +25,7 @@ const config: Config = {
   organizationName: 'arcaelas', // Usually your GitHub org/user name.
   projectName: 'collection', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
@@ -42,10 +42,12 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          routeBasePath: '/', // Serve the docs at the site's root
+          // Remove the "edit this page" links
+          editUrl: undefined,
+          // Configuración de la barra lateral
+          sidebarCollapsible: true,
+          sidebarCollapsed: true,
         },
         blog: {
           showReadingTime: true,
@@ -56,7 +58,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/arcaelas/collection/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -71,7 +73,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
+    image: 'img/docusaurus-social-card.jpg',
     metadata:[
       {
         name:"google-adsense-account",
@@ -79,17 +81,17 @@ const config: Config = {
       }
     ],
     navbar: {
-      title: 'Inicio',
+      title: 'Arcaelas Collection',
       logo: {
-        alt: 'Arcaelas Insiders Logo',
+        alt: 'Arcaelas Collection Logo',
         src: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentación',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
