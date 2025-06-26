@@ -15,10 +15,10 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://docs.arcaelas.com',
+  url: 'https://arcaelas.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/collection/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -40,9 +40,13 @@ const config: Config = {
     [
       'classic',
       {
+        pages: {
+          path: 'src/pages',
+          routeBasePath: '/',
+        },
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/', // Serve the docs at the site's root
+          routeBasePath: '/docs', // Servir la documentación en /docs
           // Remove the "edit this page" links
           editUrl: undefined,
           // Configuración de la barra lateral
@@ -88,8 +92,8 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
+          type: 'doc',
+          docId: 'intro',
           position: 'left',
           label: 'Documentación',
         },
