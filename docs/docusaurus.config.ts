@@ -118,7 +118,7 @@ const config: Config = {
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/arcaelas',
+              href: 'https://stackoverflow.com/questions/tagged/arcaela',
             },
             {
               label: 'Discord',
