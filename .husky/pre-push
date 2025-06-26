@@ -74,9 +74,31 @@ success "ETAPA 1: Verificación de rama exitosa"
 info "----------------------------------------"
 
 # Si llegamos aquí, estamos en la rama main
-info "ESTAMOS EN LA RAMA MAIN - Finalizando prueba..."
+info "ESTAMOS EN LA RAMA MAIN - Continuando con la verificación..."
 
-# Terminar exitosamente
+# ETAPA 2: Verificar cambios en la documentación
+info "ETAPA 2: Verificando cambios en la documentación..."
+
+# Obtener cambios en la carpeta docs
+CAMBIOS_DOCS=$(git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || true)
+
+if [ -z "$CAMBIOS_DOCS" ]; then
+  success "No hay cambios en la documentación. No es necesario compilar."
+  exit 0
+fi
+
+success "Se detectaron cambios en la documentación:"
+echo "$CAMBIOS_DOCS" | while read -r archivo; do
+  echo "  - $archivo"
+done
+
+info "Continuando con la compilación..."
+
+# Terminar exitosamente (por ahora)
+success "ETAPA 2: Verificación de cambios completada"
+info "----------------------------------------"
+info "PRUEBA COMPLETADA - El hook está funcionando correctamente"
+
 exit 0
 
 echo -e "${AZUL}[Pre-Push Hook] Detectados cambios en la documentación. Compilando...${RESET}"
