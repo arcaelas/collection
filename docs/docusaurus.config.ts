@@ -73,7 +73,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
+    image: 'img/docusaurus-social-card.jpg',
     metadata:[
       {
         name:"google-adsense-account",
@@ -81,17 +81,17 @@ const config: Config = {
       }
     ],
     navbar: {
-      title: 'Inicio',
+      title: 'Arcaelas Collection',
       logo: {
-        alt: 'Arcaelas Insiders Logo',
+        alt: 'Arcaelas Collection Logo',
         src: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentación',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
