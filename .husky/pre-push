@@ -123,9 +123,12 @@ DIR_TEMP=$(mktemp -d)
 info "Directorio temporal creado: $DIR_TEMP"
 
 # Clonar el repositorio en el directorio temporal
-info "Clonando repositorio en directorio temporal..."
-git clone --branch $RAMA_DOCS --single-branch --depth 1 git@github.com:arcaelas/collection.git $DIR_TEMP 2>/dev/null || \
-  git clone --single-branch git@github.com:arcaelas/collection.git $DIR_TEMP
+echo -e "\e[34m[INFO] Clonando repositorio en directorio temporal...\e[0m"
+if ! git clone --branch gh-pages --single-branch --depth 1 "$REPO_URL" "$DIR_TEMP" 2>/dev/null; then
+  # Si la rama gh-pages no existe, clonar el repositorio vacío
+  git clone --depth 1 "$REPO_URL" "$DIR_TEMP"
+  (cd "$DIR_TEMP" && git checkout --orphan gh-pages && git rm -rf . >/dev/null 2>&1)
+fi
 
 # Cambiar al directorio temporal
 pushd $DIR_TEMP > /dev/null
