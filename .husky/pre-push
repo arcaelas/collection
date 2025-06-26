@@ -41,18 +41,18 @@ DOCS="docs"
 if [ "$BRANCH" != "main" ]; then
   info "Solo se puede hacer push desde la rama main."
 elif git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || false; then
-  yarn docs:build
-  git checkout "${DOCS}"
-  git branch --set-upstream-to=origin/${DOCS} ${DOCS}
-  find . -mindepth 1 -maxdepth 1 ! -name "docs" ! -name ".git" -exec rm -rf {} +
+  # yarn docs:build
+  # git checkout "${DOCS}"
+  # git branch --set-upstream-to=origin/${DOCS} ${DOCS}
+  # find . -mindepth 1 -maxdepth 1 ! -name "docs" ! -name ".git" -exec rm -rf {} +
 
-  mv docs .tmp
-  mv .tmp/build/* .
-  rm -rf .tmp
+  # mv docs .tmp
+  # mv .tmp/build/* .
+  # rm -rf .tmp
 
-  git add .
-  git commit -m "docs: actualizar documentación $(date +'%Y-%m-%d %H:%M:%S')"
-  git push origin ${DOCS}
-  git checkout -q $BRANCH
+  # git add .
+  # git commit -m "docs: actualizar documentación $(date +'%Y-%m-%d %H:%M:%S')"
+  # git push origin ${DOCS}
+  # git checkout -q $BRANCH
 fi
 exit 0;
