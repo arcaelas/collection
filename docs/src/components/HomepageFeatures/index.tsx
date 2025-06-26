@@ -1,57 +1,125 @@
-import type {ReactNode} from 'react';
+import type {ReactNode, ComponentType} from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+
+// Tipos para el componente Heading
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+interface HeadingProps {
+  as?: HeadingTag;
+  children?: ReactNode;
+  className?: string;
+  [key: string]: unknown;
+}
+
+const Heading: React.FC<HeadingProps> = ({
+  as: Tag = 'h2',
+  children,
+  ...props
+}) => {
+  const Component = Tag as unknown as ComponentType<{
+    className?: string;
+    children?: ReactNode;
+  }>;
+  
+  return <Component {...props}>{children}</Component>;
+};
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: ReactNode;
+  href?: string;
 };
+
+// Importar las imágenes
+const CollectionImage = require('@site/static/img/foot-card-1.png').default;
+const TypeImage = require('@site/static/img/foot-card-2.png').default;
+const SpeedImage = require('@site/static/img/foot-card-3.png').default;
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Potente API de Colecciones',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Manipula colecciones de datos con una API fluida y expresiva.
+        Filtra, ordena y transforma tus datos con métodos encadenables.
       </>
     ),
+    href: '/docs/intro',
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Tipado Fuerte',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Desarrollado con TypeScript para ofrecer autocompletado inteligente
+        y detección temprana de errores en tiempo de desarrollo.
       </>
     ),
+    href: '/docs/api',
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Ligero y Rápido',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Optimizado para rendimiento con cero dependencias externas.
+        Ideal para aplicaciones que requieren alto rendimiento con colecciones de datos.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({ title, description, href }: FeatureItem) {
+  const isFirstFeature = title === 'Potente API de Colecciones';
+  const isSecondFeature = title === 'Tipado Fuerte';
+  const isThirdFeature = title === 'Ligero y Rápido';
+  
+  const content = (
+    <>
+      <div className="text--center">
+        {isFirstFeature && (
+          <img 
+            src={CollectionImage} 
+            alt={title} 
+            className={styles.featureImage}
+            loading="lazy"
+          />
+        )}
+        {isSecondFeature && (
+          <img 
+            src={TypeImage} 
+            alt={title} 
+            className={styles.featureImage}
+            loading="lazy"
+          />
+        )}
+        {isThirdFeature && (
+          <img 
+            src={SpeedImage} 
+            alt={title} 
+            className={styles.featureImage}
+            loading="lazy"
+          />
+        )}
+      </div>
+      <div className="text--center">
+        <h3 className={styles.featureTitle}>{title}</h3>
+        <p className={styles.featureDescription}>{description}</p>
+      </div>
+    </>
+  );
+
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
+      {href ? (
+        <a href={href} className={clsx(styles.feature, styles.featureLink)}>
+          {content}
+        </a>
+      ) : (
+        <div className={styles.feature}>
+          {content}
+        </div>
+      )}
     </div>
   );
 }
@@ -59,8 +127,8 @@ function Feature({title, Svg, description}: FeatureItem) {
 export default function HomepageFeatures(): ReactNode {
   return (
     <section className={styles.features}>
-      <div className="container">
-        <div className="row">
+      <div className={styles.container}>
+        <div className={styles.row}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}

@@ -14,7 +14,18 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   docsSidebar: [
-    'intro',
+    {
+      type: 'doc',
+      id: 'intro',
+      label: 'Introducción',
+      // type: 'link',
+      // href: '/docs/intro',
+      // label: 'Introducción',
+      // link:{
+      //   type:'doc',
+      //   id:'intro'
+      // }
+    },
     'guia-inicio',
     {
       type: 'category',

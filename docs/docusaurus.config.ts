@@ -6,7 +6,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
   title: 'Arcaelas Collection',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Herramientas de desarrollo de alta calidad para aplicaciones modernas',
   favicon: 'https://raw.githubusercontent.com/arcaelas/dist/refs/heads/main/logo/png/32.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future

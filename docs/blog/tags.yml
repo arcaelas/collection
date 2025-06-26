@@ -1,19 +1,24 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+coleccion:
+  label: Colección
+  permalink: /coleccion
+  description: Funcionalidades del núcleo de la librería Arcaelas Collection
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+typescript:
+  label: TypeScript
+  permalink: /typescript
+  description: Artículos sobre el uso de TypeScript con Arcaelas Collection
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+filtracion:
+  label: Filtración
+  permalink: /filtracion
+  description: Métodos y técnicas para filtrar datos con Arcaelas Collection
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+transformacion:
+  label: Transformación
+  permalink: /transformacion
+  description: Manipulación y transformación de datos en colecciones
+
+casos-uso:
+  label: Casos de Uso
+  permalink: /casos-uso
+  description: Ejemplos prácticos de implementación de Arcaelas Collection

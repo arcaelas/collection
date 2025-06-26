@@ -1,8 +1,18 @@
-# Introducción a Arcaelas Collection
+import ThemedImage from '@theme/ThemedImage';
+import bannerLight from '@site/static/img/banner.png';
 
-Bienvenido a la documentación de Arcaelas Collection, una biblioteca de utilidades para manipulación de colecciones en JavaScript/TypeScript.
+<div className="banner-container" style={{marginBottom: '2rem'}}>
+  <ThemedImage 
+    alt="Arcaelas Collection Banner"
+    sources={{
+      light: bannerLight,
+      dark: bannerLight,
+    }}
+    style={{width: '100%', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'}}
+  />
+</div>
 
-## Características principales
+# Características principales
 
 - Filtrado y búsqueda avanzada
 - Transformación de datos
@@ -12,17 +22,17 @@ Bienvenido a la documentación de Arcaelas Collection, una biblioteca de utilida
 ## Guía de inicio rápido
 
 ```typescript
-import { Collection } from '@arcaelas/collection';
+import { Collection } from "@arcaelas/collection";
 
 // Crear una colección
 const users = new Collection([
-  { id: 1, name: 'Alice', role: 'admin' },
-  { id: 2, name: 'Bob', role: 'user' },
-  { id: 3, name: 'Charlie', role: 'admin' }
+  { id: 1, name: "Alice", role: "admin" },
+  { id: 2, name: "Bob", role: "user" },
+  { id: 3, name: "Charlie", role: "admin" },
 ]);
 
 // Filtrar usuarios administradores
-const admins = users.where('role', 'admin').get();
+const admins = users.where("role", "admin").get();
 ```
 
 ## Instalación
