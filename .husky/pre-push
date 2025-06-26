@@ -35,152 +35,24 @@ warning() {
   echo -e "${AMARILLO}[ADVERTENCIA] $1${RESET}"
 }
 
-# --- INICIO DEL SCRIPT ---
-info "Iniciando hook pre-push..."
+BRANCH=$(git branch --show-current)
+DOCS="docs"
 
-# ETAPA 1: Verificar que estamos en la rama main
-info "ETAPA 1: Verificando rama actual..."
+if [ "$BRANCH" != "main" ]; then
+  info "Solo se puede hacer push desde la rama main."
+elif git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || false; then
+  yarn docs:build
+  git checkout "${DOCS}"
+  git branch --set-upstream-to=origin/${DOCS} ${DOCS}
+  find . -mindepth 1 -maxdepth 1 ! -name "docs" ! -name ".git" -exec rm -rf {} +
 
-# Obtener la rama actual de múltiples maneras
-RAMA_ACTUAL=""
+  mv docs .tmp
+  mv .tmp/build/* .
+  rm -rf .tmp
 
-# Método 1: Usando symbolic-ref
-if RAMA=$(git symbolic-ref --short HEAD 2>/dev/null); then
-  RAMA_ACTUAL=$RAMA
-  success "Rama detectada (método 1): $RAMA_ACTUAL"
-else
-  # Método 2: Usando branch --show-current
-  if RAMA=$(git branch --show-current 2>/dev/null); then
-    RAMA_ACTUAL=$RAMA
-    success "Rama detectada (método 2): $RAMA_ACTUAL"
-  else
-    # Método 3: Usando parsear git branch
-    RAMA_ACTUAL=$(git branch | grep '^\*' | cut -d ' ' -f2-)
-    if [ -n "$RAMA_ACTUAL" ]; then
-      success "Rama detectada (método 3): $RAMA_ACTUAL"
-    else
-      error "No se pudo determinar la rama actual"
-    fi
-  fi
-fi
-
-# Verificar si estamos en la rama main
-if [ "$RAMA_ACTUAL" != "main" ]; then
-  warning "No estamos en la rama main (rama actual: $RAMA_ACTUAL). Saliendo..."
-  exit 0
-fi
-
-success "ETAPA 1: Verificación de rama exitosa"
-info "----------------------------------------"
-
-# Si llegamos aquí, estamos en la rama main
-info "ESTAMOS EN LA RAMA MAIN - Continuando con la verificación..."
-
-# ETAPA 2: Verificar cambios en la documentación
-info "ETAPA 2: Verificando cambios en la documentación..."
-
-# Obtener cambios en la carpeta docs
-CAMBIOS_DOCS=$(git diff --name-only HEAD@{1} HEAD 2>/dev/null | grep "^docs/" || true)
-
-if [ -z "$CAMBIOS_DOCS" ] && [ "$1" != "--force" ]; then
-  success "No hay cambios en la documentación. No es necesario compilar."
-  exit 0
-fi
-
-if [ -n "$CAMBIOS_DOCS" ]; then
-  success "Se detectaron cambios en la documentación:"
-  echo "$CAMBIOS_DOCS" | while read -r archivo; do
-    echo "  - $archivo"
-  done
-fi
-
-info "Iniciando proceso de compilación y publicación de la documentación..."
-
-# ETAPA 3: Compilar la documentación
-info "ETAPA 3: Compilando documentación..."
-
-# Guardar la rama actual
-RAMA_ACTUAL=$(git symbolic-ref --short HEAD)
-RAMA_DOCS="docs"  # Usamos la rama docs para la documentación
-
-# Instalar dependencias de docs si es necesario
-if [ ! -d "docs/node_modules" ]; then
-  info "Instalando dependencias de documentación..."
-  (cd docs && yarn install)
-fi
-
-# Compilar documentación
-info "Compilando documentación con 'yarn docs:build'..."
-if ! yarn docs:build; then
-  error "Error al compilar la documentación. Por favor, corrige los errores antes de continuar."
-fi
-
-# ETAPA 4: Publicar documentación
-info "ETAPA 4: Publicando documentación en la rama $RAMA_DOCS..."
-
-# Refrescar referencias remotas
-info "Actualizando referencias remotas..."
-git fetch origin
-
-# Verificar si la rama docs existe remotamente
-if ! git show-ref --verify --quiet refs/remotes/origin/$RAMA_DOCS; then
-  # Crear rama docs si no existe
-  info "La rama $RAMA_DOCS no existe, creándola..."
-  git checkout --orphan $RAMA_DOCS
-  git rm -rf . > /dev/null 2>&1 || true
-  echo "# Documentación de $RAMA_DOCS" > README.md
-  git add README.md
-  git commit -m "docs: inicializar rama $RAMA_DOCS"
-  git push -u origin $RAMA_DOCS
-  git checkout -q $RAMA_ACTUAL
-  success "Rama $RAMA_DOCS creada exitosamente"
-fi
-
-# Cambiar a la rama docs
-info "Cambiando a la rama $RAMA_DOCS..."
-git checkout -b $RAMA_DOCS origin/$RAMA_DOCS 2>/dev/null || git checkout $RAMA_DOCS --
-
-# Limpiar todo excepto .git
-info "Limpiando rama $RAMA_DOCS..."
-find . -mindepth 1 -not -path '*/\..*' -not -path './.git*' -exec rm -rf {} + 2>/dev/null || true
-
-# Mover archivos compilados a la raíz
-info "Moviendo archivos compilados a la raíz..."
-if [ -d "docs/build" ]; then
-  cp -r docs/build/. . 2>/dev/null || true
-  rm -rf docs/build 2>/dev/null || true
-else
-  warning "No se encontró el directorio docs/build. La compilación puede haber fallado."
-  ls -la docs/
-fi
-
-# Asegurarse de que los archivos necesarios para GitHub Pages estén presentes
-touch .nojekyll
-
-# Hacer commit de los cambios
-git add .
-if git diff --cached --quiet; then
-  info "No hay cambios para publicar en la documentación."
-else
-  info "Haciendo commit de los cambios en la documentación..."
+  git add .
   git commit -m "docs: actualizar documentación $(date +'%Y-%m-%d %H:%M:%S')"
-  
-  # Hacer push a la rama docs
-  info "Subiendo cambios a la rama $RAMA_DOCS..."
-  git push origin $RAMA_DOCS
-  
-  success "Documentación publicada exitosamente en la rama $RAMA_DOCS"
-  info "Puedes ver la documentación en: https://arcaelas.github.io/collection/"
+  git push origin ${DOCS}
+  git checkout -q $BRANCH
 fi
-
-# Volver a la rama original
-info "Volviendo a la rama original: $RAMA_ACTUAL"
-git checkout -q $RAMA_ACTUAL
-
-# Éxito
-success "✅ Proceso de documentación completado exitosamente!"
-info "----------------------------------------"
-info "La documentación se ha publicado en la rama $RAMA_DOCS"
-info "Puedes ver la documentación en: https://arcaelas.github.io/collection/"
-
-exit 0
+exit 0;
