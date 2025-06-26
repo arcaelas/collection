@@ -1,6 +1,6 @@
-import type {ReactNode, ComponentType} from 'react';
-import React from 'react';
 import clsx from 'clsx';
+import type { ComponentType, ReactNode } from 'react';
+import React from 'react';
 import styles from './styles.module.css';
 
 // Tipos para el componente Heading
@@ -34,9 +34,9 @@ type FeatureItem = {
 
 // Importar las imágenes
 // Versiones PNG (fallback)
-const CollectionImagePng = require('@site/static/img/foot-card-1.png').default;
-const TypeImagePng = require('@site/static/img/foot-card-2.png').default;
-const SpeedImagePng = require('@site/static/img/foot-card-3.png').default;
+const CollectionImagePng = require('@site/static/img/foot-card-1.svg').default;
+const TypeImagePng = require('@site/static/img/foot-card-2.svg').default;
+const SpeedImagePng = require('@site/static/img/foot-card-3.svg').default;
 
 // Versiones WebP (optimizadas)
 const CollectionImageWebp = require('@site/static/img/webp/foot-card-1.webp').default;
