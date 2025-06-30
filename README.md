@@ -1,344 +1,309 @@
-
 ![Arcaelas Insiders Banner](https://raw.githubusercontent.com/arcaelas/dist/main/banner/svg/dark.svg#gh-dark-mode-only)
 
 ![Arcaelas Insiders Banner](https://raw.githubusercontent.com/arcaelas/dist/main/banner/svg/light.svg#gh-light-mode-only)
 
-  
-
 # Welcome to Arcaelas Insiders!
 
-Hello, if this is your first time reading the **[Arcaelas Insiders](https://github.com/arcaelas)**  **documentation**, let me tell you that you have found a good place to learn.  
+Hello, if this is your first time reading the **[Arcaelas Insiders](https://github.com/arcaelas)** **documentation**, let me tell you that you have found a good place to learn.
 
-**Our team** and *community* are happy to write and make methods simple to implement and understand, but I think you already know that.
+**Our team** and _community_ are happy to write and make methods simple to implement and understand, but I think you already know that.
 
 > The documentation for this tool is open to edits and suggestions.
 
 Let's start with the basic implementation steps.
+
 ```bash
 > npm i --save @arcaelas/collection
 > yarn add --save @arcaelas/collection
 ```
 
-
 ## Implementation
+
 ```javascript
 // Class Import Statement
-import Collection from  '@arcaelas/Collection'
+import Collection from "@arcaelas/Collection";
 
 // Function import statement
-import { Collection } from  '@arcaelas/collection'
+import { Collection } from "@arcaelas/collection";
 
 // EsModule
-const Collection =  require('@arcaelas/collection')
+const Collection = require("@arcaelas/collection");
 ```
 
-
 ## Motivation
+
 In object-oriented programming we find common situations, such as those where we want to order, filter and modify elements of a list, however the "Array Prototypes" are not very complete in some cases, for these situations the **Arcaelas Insiders** team has designed useful tools that allow these actions within "Collections".
 
 ### Curiosities
+
 As an interesting part of this tool, we have the B-JSON notation that Atlas implements in its MongoDB database engine, only some of them are implemented here, but we will explain how to extend them and create your own validators.
 
-
 ## Get Started
+
 ```typescript
 import Collection from "@arcaelas/collection"
 
 const collection = new Collection([ ... ])
 ```
 
-### **filter()**
-> All matched elements fro collection, you can use callback or QueryHandler:
-```typescript
-// Using callback to filtering...
-collection.filter(item=>{
-	return item.age >= 18;
-});
+## Method Reference and Use Cases
 
-// or match expressions...
+### `filter()`
+
+> Filters elements by a callback or Query expression.
+
+```ts
+collection.filter((item) => item.age >= 18);
+collection.filter({ age: { $gte: 18 } });
 collection.filter({
-	age:{ $gte: 18 }
-});
-
-// veteran level.
-collection.filter({
-	name: /Alejandro/,
-	skills:{
-		$contains: "Liberty"
-	},
-	gender:{
-		$not:{
-			$in: ['animal','fruit'],
-		}
-	},
-	work:{
-		$not:{
-			$in: ["work", "without", "coffe"]
-		}
-	}
+  name: /Alejandro/,
+  skills: { $contains: "Liberty" },
+  gender: { $not: { $in: ["animal", "fruit"] } },
+  work: { $not: { $in: ["work", "without", "coffee"] } },
 });
 ```
 
-### **not()**
-> Get all elements that not matched with expression or handler.
-```typescript
-users.filter({
-	online: { $not: false }
-})
-user.not({
-	online: false
-})
+### `not()`
+
+> Returns elements that do NOT match the expression.
+
+```ts
+collection.not({ online: false });
 ```
 
-### **first()**
-> Get first matched element, using **QueryHandler**
-```typescript
-users.first({
-	_id: "...",
-	age:{ $gte: 18 },
-	role:{
-		$not:{
-			$in:["admin"]
-		}
-	}
-})
+### `first()` / `last()`
+
+> Returns the first or last element that matches a Query or function.
+
+```ts
+collection.first({ age: { $gte: 18 } });
+collection.last((item) => item.name === "Joe");
 ```
 
-### **last()**
-> Get last matched element, using **QueryHandler**
-```typescript
-users.last({
-	_id: "...",
-	age:{ $gte: 18 },
-	role:{
-		$not:{
-			$in:["admin"]
-		}
-	}
-})
+### `where()` / `whereNot()`
+
+> Shorthand for querying with operator and value.
+
+```ts
+collection.where("online", false);
+collection.where("age", ">=", 21);
+collection.whereNot("role", "admin");
+collection.whereNot("price", "<", 100);
 ```
 
-### **where()**
-> Use this shorthand to filter items
-```typescript
-const offline = users.where("online", false)
-const online = users.where("online", "==", false)
+### `update()`
+
+> Updates elements based on query or globally.
+
+```ts
+collection.update({ online: false }, { deletedAt: new Date() });
+collection.update({ email: /gmail\.com$/ }, (item) => ({
+  prevEmail: item.email,
+  email: null,
+}));
+collection.update((item) => ({ name: item.name.toUpperCase() }));
 ```
 
-### **whereNot()**
-> Is opposite of **where()**
-```typescript
-const offline = users.whereNot("online", true)
-const online = users.whereNot("online", "==", true)
+### `delete()`
+
+> Removes matched elements. **Mutates** collection.
+
+```ts
+collection.delete({ deletedAt: { $exists: true } });
 ```
 
-### **update()**
-> Updates information for items that match a specific or general filter expression.
-```typescript
-// Simple matches
-// Update all elements that "online" field is false
-// Add or replace "deletedAt" field with "new Date()"
-collection.update({ online: false }, { deletedAt: new Date() })
+### `collect()`
 
-// Most common
-collect.update({
-	email: /gmail\.com$/g // all items that email is Gmail Host
-}, {
-	email: null, // Set current email to null
-	prevEmail: "${email}" // Save email in this field
-})
+> Creates a new `Collection` instance preserving prototype.
+
+```ts
+collection.collect([ ... ]);
 ```
 
-### **delete()**
-> Remove matched elementos from collection
-> **NOTE:** This method mutate collection
-```typescript
-// Remove all elements where "deletedAt" is not "nullable"
-collection.delete({
-	deletedAt: {
-		$exists: true
-	}
-})
+### `dd()` / `dump()`
+
+> Debug methods to print and exit or continue.
+
+```ts
+collection.dump();
+collection.dd();
 ```
 
-### **collect()**
-> Create a collection with parent collection prototypes.
-```typescript
-collection.collect([...]) // Expected: Collection
+### `max()` / `min()` / `sum()`
+
+> Performs aggregate calculations by key or function.
+
+```ts
+collection.max("score");
+collection.min("price");
+collection.sum("amount");
+collection.sum((item) => item.price * 1.18);
 ```
 
-### **dd()**
-> The dd method will console.log the collection and exit the current process
-```typescript
-collection.dd()
-// Collection { items: [ 1, 2, 3 ] }
-// (Exits node.js process)
+### `random()` / `shuffle()`
+
+> Returns or mutates with random order.
+
+```ts
+collection.random(2);
+collection.shuffle();
 ```
 
-### **dump()**
-> Print collection and continue.
-```typescript
-collection.dump()
+### `chunk()` / `paginate()`
+
+> Splits into chunks or paginates.
+
+```ts
+collection.chunk(100);
+collection.paginate(1, 50);
 ```
 
-### **max()**
-> The max method returns the maximum value of a given key.
-```typescript
-pictures.max("upvotes")
+### `countBy()` / `groupBy()`
+
+> Aggregates by key or iterator.
+
+```ts
+collection.countBy("type");
+collection.countBy((item) => item.group);
+collection.groupBy("status");
+collection.groupBy((item) => item.role);
 ```
 
-### **min()**
-> The min method returns the minimum value of a given key.
-```typescript
-pictures.min("upvotes")
+### `each()`
+
+> Iterates over elements. `return false` to break.
+
+```ts
+collection.each((item) => {
+  if (!item.active) return false;
+});
 ```
 
-### **random()**
-> Get random elements, with the argument "length" the number of elements is indicated.
-```typescript
-collection.random() // All elements random sorted
-collection.random(2) // Two random elements
+### `forget()`
+
+> Removes specific fields from each item.
+
+```ts
+collection.forget("password", "token");
 ```
 
-### **shuffle()**
-> This method set items order as random and mutate collection.
-```typescript
-collection.shuffle()
+### `unique()`
+
+> Filters to unique values by key or callback.
+
+```ts
+collection.unique("email");
+collection.unique((item) => item.id);
 ```
 
-### **sum()**
-> Sum the elements values according to a specific key.
-```typescript
-const to_pay = shop_cart.sum("articles.price")
+### `macro()` / `Collection.macro()`
+
+> Adds custom methods.
+
+```ts
+Collection.macro("pluck", function (key) {
+  return this.map((item) => item[key]);
+});
+collection.pluck("name");
 ```
 
-### **chunk()**
-> Break the collection into multiple, smaller collections of a given size.
-```typescript
-paginate = posts.chunks(100)
+### `sort()`
+
+> Sorts the collection by key, direction or comparator function.
+
+```ts
+collection.sort("age", "asc");
+collection.sort("name", "desc");
+collection.sort((a, b) => a.score - b.score);
 ```
 
-### **countBy()**
-> Group items by key and count
-```typescript
-products.countBy("buyed")
+### `every()`
+
+> Verifies that all elements satisfy the expression.
+
+```ts
+collection.every("active");
+collection.every("score", ">", 0);
+collection.every({ verified: true });
+collection.every((item) => item.age >= 18);
 ```
 
-### **each()**
-> Iterate over each collection elements, if return false break iteration
-```typescript
-sockets.each(socket=>{
-	if( !socket.online ) return false// This stop iteration
-	else if( socket.name ) return // Iteration skip current cycle, not stoped.
-	socket.send("ping")
-})
+### `stringify()`
+
+> Converts collection to JSON string.
+
+```ts
+collection.stringify();
+collection.stringify(null, 2);
 ```
 
-### **forget()**
-> Remove a specific fields from each items
-```typescript
-	sessions.forget("access_token")
+### Native methods preserved
+
+- `concat`, `map`, `pop`, `slice`, `splice`, `shift`, `unshift` are fully supported.
+
+## Collection TypeScript Signature
+
+```ts
+Collection<T, V>;
+// T = item type
+// V = shape for query validation
 ```
 
-### **groupBy()**
-> Group items by key
-```typescript
-const online = followers.grupBy("online") // { ... }
-const offline = online.false
-```
+This ensures type-safe autocompletion and query shape consistency.
 
-### **paginate()**
-> Wrap element in X number of items and return specific page.
-```typescript
-const page_one = post.paginate(1) // 1 - 20
-const page_two = post.paginate(2, 500) // 501 - 1000
-```
+## Query DSL Aliases
 
-### **unique()**
-> Filter elements and return only elements that key/value is unique.
-```typescript
-const unlinked = links.unique("_id")
-const removed = trash.unique((item)=>{
-	return item.id
-})
-```
+| Alias      | Mongo DSL   | Meaning                     |
+| ---------- | ----------- | --------------------------- |
+| `=`        | `$eq`       | equal                       |
+| `!=`       | `$not`      | not equal                   |
+| `>`        | `$gt`       | greater than                |
+| `<`        | `$lt`       | less than                   |
+| `>=`       | `$gte`      | greater or equal            |
+| `<=`       | `$lte`      | less or equal               |
+| `in`       | `$in`       | included in array           |
+| `includes` | `$includes` | contains substring or value |
 
-### **macro()**
-> Adding custom methods for current collection.
-```typescript
-collection.macro("getName", (item)=>{
-	return item.name
-}) // Expected: Collection
+## Performance and Best Practices
 
-collection.getName() // Expected: [ Joe, Julia, ... ]
+- Underlying logic delegates to native `Array` methods.
+- Query filtering is optimized using precompiled functions.
+- Avoid frequent mutation in large collections; prefer `.collect()` clones.
+- For secure randomness, override `random()` with your own comparator.
 
-```
+## Contribution Guide
 
-### **sort()**
-> The sort method sorts the collection.
-```typescript
-collection.sort((a, b)=> a.age > b.age ? 1 : -1)
-// or
-collection.sort("age", "desc")
-```
+1. Fork and clone this repo.
+2. Run `npm install`.
+3. Run tests: `npm run test`.
+4. Follow conventional commits.
 
-### **every()**
-> "Every" can verify that all elements satisfy a certain expression.
-> Read [Array.prototype.every](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
-```typescript
-// Check if every items have "_id" field
-collection.every('_id')
+### Available Scripts
 
-// All items have "status" == "enabled"
-collection.every('status', 'enabled')
+| Script          | Description             |
+| --------------- | ----------------------- |
+| `npm run build` | Compile TS and bundle   |
+| `npm run test`  | Run unit tests          |
+| `npm run lint`  | Run ESLint and Prettier |
 
-// All prices items is greater than zero "0"
-collection.every('price', '>', 0)
+## Roadmap
 
-// Using QueryHandler to match every items.
-collection.every({
-	expired: { $not: true } // All "expired" items is ddifferent that "true"
-})
-```
+- [ ] LazyCollection using generators
+- [ ] AsyncCollection support for promises/streams
+- [ ] Drop lodash dependency
+- [ ] YAML/CSV serialization
 
-### macro (static)
-> Adding custom method for all Collections
-```typescript
-Collection.macro("get", (item, key)=>{...})
+## License
 
-const pictures = new Collection([...])
+MIT © 2025 Miguel Alejandro (Miguel Guevara) [miguel.guevara@arcaelas.com](mailto:miguel.guevara@arcaelas.com)
 
-pictures.get("url") // Expected: [...]
-```
-
-### concat
-> Read [Array.prototype.concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)
-
-### map
-> Read [Array.prototype.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-
-### pop
-> Read [Array.prototype.pop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
-
-### slice
-> Read [Array.prototype.slice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
-
-### splice
-> Read [Array.prototype.splice](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
-
-### shift
-> Read [Array.prototype.shift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
-
-### unshift
->  Read [Array.prototype.unshift](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
-
-<hr/>
+---
 
 <div  style="text-align:center;margin-top:50px;">
 	<p  align="center">
 		<img  src="https://raw.githubusercontent.com/arcaelas/dist/main/logo/svg/64.svg"  height="32px">
 	<p>
 
-¿Want to discuss any of my open source projects, or something else?Send me a direct message on [Twitter](https://twitter.com/arcaelas).</br> If you already use these libraries and want to support us to continue development, you can sponsor us at [Github Sponsors](https://github.com/sponsors/arcaelas).
+Want to discuss any of my open source projects, or something else? Send me a direct message on [Twitter](https://twitter.com/arcaelas).<br> If you already use these libraries and want to support us to continue development, you can sponsor us at [Github Sponsors](https://github.com/sponsors/arcaelas).
 
 </div>
