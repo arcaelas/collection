@@ -168,8 +168,8 @@ export default class Collection<
    *   sum += item.price;
    * });
    */
-  public each(fn: (item: T, index: number, arr: T[]) => any): this {
-    for (let index = 0, stop = false; index < this.length && !stop; index += 1)
+  public each(fn: (item: T, index: number, arr: this) => any): this {
+    for (let index = 0, stop = false; index < this.length && !stop; index++)
       stop = fn(this[index], index, this) === false;
     return this;
   }
@@ -187,39 +187,49 @@ export default class Collection<
    *  return item.stock > 0  // Check if all items have "stock" property > 0
    * })
    */
-  public every(key: string): boolean;
-  public every(query: Query<V>): boolean;
-  public every(
-    handler: Noop<[item: T, index: number, arr: T[]], boolean>
+  public override every<S extends T>(
+    predicate: (value: T, index: number, array: T[]) => value is S,
+    thisArg?: any
+  ): this is S[];
+  public override every(
+    predicate: (value: T, index: number, array: T[]) => unknown,
+    thisArg?: any
   ): boolean;
-  public every(key: string, value: any): boolean;
-  public every(key: string, operator: Operator, value: any): boolean;
-  public every(...args: any[]) {
-    switch (args.length) {
-      case 1:
-        switch (typeof (args[0] ?? 0)) {
-          case "function":
-            return super.every(args[0]);
-          case "string":
-            return super.every((o) => has(o as any, args[0]));
-          case "object":
-            return this.filter(args[0]).length === this.length;
-        }
-        break;
-      case 2:
-        return super.every((o) => get(o as any, args[0]) === args[1]);
-      case 3:
-        if (!alias[args[1]])
-          throw new TypeError(
-            args[0] + ` is not a valid operator, use: ` + Object.keys(alias)
-          );
-        return super.every(
-          this.query({ [args[0]]: { [alias[args[1]]]: args[2] } } as any)
-        );
+  public override every(...args: any[]): boolean {
+    const [first, second, third] = args;
+
+    if (typeof first === "function") {
+      // Firma nativa de Array.every (predicado)
+      return super.every(first, second);
     }
-    throw new Error(
-      'Some argument is invalid, "key" must be a valid function iterator or string.'
-    );
+
+    if (args.length === 1) {
+      if (typeof first === "string") {
+        return super.every((item) => has(item as any, first));
+      }
+
+      if (typeof first === "object") {
+        return this.filter(first).length === this.length;
+      }
+    }
+
+    if (args.length === 2) {
+      return super.every((item) => get(item as any, first) === second);
+    }
+
+    if (args.length === 3) {
+      const op = alias[second];
+      if (!op) {
+        throw new TypeError(
+          `"${second}" no es un operador válido. Usa: ${Object.keys(alias).join(
+            ", "
+          )}`
+        );
+      }
+      return super.every(this.query({ [first]: { [op]: third } } as any));
+    }
+
+    throw new Error(`every(): argumentos inválidos.`);
   }
 
   /**
