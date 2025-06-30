@@ -1,9 +1,37 @@
 {
-  "license": "ISC",
-  "version": "2.1.2",
-  "name": "@arcaelas/collection",
-  "homepage": "https://github.com/arcaelas/collection",
+  "author": {
+    "email": "comunity@arcaelas.com",
+    "name": "Arcaelas Insiders",
+    "url": "https://github.com/arcaelas"
+  },
+  "bugs": {
+    "email": "community@arcaelas.com",
+    "url": "https://github.com/arcaelas/collection/issues"
+  },
+  "dependencies": {
+    "@arcaelas/utils": "^2.0.1",
+    "lodash": "^4.17.21"
+  },
   "description": "Searching, filtering and mapping collections is the bread and butter for developers, that's why we offer you \"eloquent\".",
+  "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "@types/lodash": "^4.14.194",
+    "esbuild": "^0.25.0",
+    "husky": "9.1.7",
+    "jest": "^29.5.0",
+    "typescript": "^5.0.4"
+  },
+  "files": [
+    "build/",
+    "*.md",
+    "*.json"
+  ],
+  "homepage": "https://github.com/arcaelas/collection",
+  "jest": {
+    "testPathIgnorePatterns": [
+      "test/*.ts"
+    ]
+  },
   "keywords": [
     "collect",
     "collection",
@@ -14,52 +42,24 @@
     "open source",
     "database"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/arcaelas/collection.git"
-  },
-  "bugs": {
-    "email": "community@arcaelas.com",
-    "url": "https://github.com/arcaelas/collection/issues"
-  },
+  "license": "ISC",
   "main": "build/index.js",
-  "files": [
-    "build/",
-    "*.md",
-    "*.json"
-  ],
-  "author": {
-    "name": "Arcaelas Insiders",
-    "email": "comunity@arcaelas.com",
-    "url": "https://github.com/arcaelas"
-  },
+  "name": "@arcaelas/collection",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arcaelas/collection.git"
+  },
   "scripts": {
-    "test": "yarn build && jest",
     "build": "tsc && node esbuild.js",
     "commit": "npm publish --access=public",
-    "prepublishOnly": "yarn test",
     "postpublish": "rm -rf build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepublishOnly": "yarn test",
+    "test": "yarn build && jest"
   },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "test/*.ts"
-    ]
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.1",
-    "@types/lodash": "^4.14.194",
-    "esbuild": "^0.25.0",
-    "husky": "9.1.7",
-    "jest": "^29.5.0",
-    "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "@arcaelas/utils": "^2.0.1",
-    "lodash": "^4.17.21"
-  }
+  "version": "2.1.2"
 }
