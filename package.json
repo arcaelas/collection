@@ -43,9 +43,6 @@
     "commit": "npm publish --access=public",
     "prepublishOnly": "yarn test",
     "postpublish": "rm -rf build",
-    "docs:dev": "yarn --cwd docs start",
-    "docs:build": "yarn --cwd docs build",
-    "docs:serve": "yarn --cwd docs serve",
     "prepare": "husky"
   },
   "jest": {
