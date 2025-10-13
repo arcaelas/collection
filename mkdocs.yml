@@ -1,0 +1,230 @@
+site_name: '@arcaelas/collection'
+site_description: 'Collection utility library with MongoDB-like query DSL for TypeScript'
+site_author: 'Arcaelas Insiders'
+site_url: 'https://arcaelas.github.io/collection'
+repo_name: 'arcaelas/collection'
+repo_url: 'https://github.com/arcaelas/collection'
+edit_uri: 'edit/main/docs/'
+
+copyright: 'Copyright &copy; 2025 Arcaelas Insiders'
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/database
+
+plugins:
+  - search:
+      lang:
+        - en
+        - es
+        - de
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+          site_name: '@arcaelas/collection'
+        - locale: es
+          name: Español
+          build: true
+          site_name: '@arcaelas/collection'
+          nav_translations:
+            Home: Inicio
+            Installation: Instalación
+            Guides: Guías
+            Getting Started: Primeros Pasos
+            Core Concepts: Conceptos Básicos
+            Query Operators: Operadores de Consulta
+            Aggregation Methods: Métodos de Agregación
+            Best Practices: Buenas Prácticas
+            API Reference: Referencia de API
+            Collection Class: Clase Collection
+            Filtering Methods: Métodos de Filtrado
+            Transformation Methods: Métodos de Transformación
+            Utility Methods: Métodos Utilitarios
+            Macros: Macros
+            Examples: Ejemplos
+            Basic Usage: Uso Básico
+            Filtering & Sorting: Filtrado y Ordenamiento
+            Aggregation: Agregación
+            Advanced Patterns: Patrones Avanzados
+            Advanced: Avanzado
+            Performance: Rendimiento
+            TypeScript Usage: Uso con TypeScript
+            Extending Collection: Extendiendo Collection
+            Changelog: Registro de Cambios
+        - locale: de
+          name: Deutsch
+          build: true
+          site_name: '@arcaelas/collection'
+          nav_translations:
+            Home: Startseite
+            Installation: Installation
+            Guides: Anleitungen
+            Getting Started: Erste Schritte
+            Core Concepts: Grundkonzepte
+            Query Operators: Abfrageoperatoren
+            Aggregation Methods: Aggregationsmethoden
+            Best Practices: Best Practices
+            API Reference: API-Referenz
+            Collection Class: Collection-Klasse
+            Filtering Methods: Filtermethoden
+            Transformation Methods: Transformationsmethoden
+            Utility Methods: Hilfsmethoden
+            Macros: Makros
+            Examples: Beispiele
+            Basic Usage: Grundlegende Verwendung
+            Filtering & Sorting: Filtern und Sortieren
+            Aggregation: Aggregation
+            Advanced Patterns: Erweiterte Muster
+            Advanced: Erweitert
+            Performance: Leistung
+            TypeScript Usage: TypeScript-Verwendung
+            Extending Collection: Collection erweitern
+            Changelog: Änderungsprotokoll
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/arcaelas
+      name: Arcaelas on GitHub
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/arcaelas
+      name: Arcaelas on Twitter
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/@arcaelas/collection
+      name: '@arcaelas/collection on npm'
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve this page by
+            <a href="https://github.com/arcaelas/collection/issues/new" target="_blank">opening an issue</a>.
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Guides:
+      - Getting Started: guides/getting-started.md
+      - Core Concepts: guides/core-concepts.md
+      - Query Operators: guides/query-operators.md
+      - Aggregation Methods: guides/aggregation-methods.md
+      - Best Practices: guides/best-practices.md
+  - API Reference:
+      - Collection Class: api/collection-class.md
+      - Filtering Methods: api/filtering-methods.md
+      - Transformation Methods: api/transformation-methods.md
+      - Aggregation Methods: api/aggregation-methods.md
+      - Utility Methods: api/utility-methods.md
+      - Macros: api/macros.md
+  - Examples:
+      - Basic Usage: examples/basic-usage.md
+      - Filtering & Sorting: examples/filtering-sorting.md
+      - Aggregation: examples/aggregation.md
+      - Advanced Patterns: examples/advanced-patterns.md
+  - Advanced:
+      - Performance: advanced/performance.md
+      - TypeScript Usage: advanced/typescript-usage.md
+      - Extending Collection: advanced/extending-collection.md
+  - Changelog: CHANGELOG.md
