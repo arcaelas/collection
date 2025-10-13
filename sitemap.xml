@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://arcaelas.github.io/collection/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/CHANGELOG/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/CHANGELOG/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/installation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/installation/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/installation/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/installation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/advanced/extending-collection/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/extending-collection/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/advanced/performance/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/performance/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/advanced/typescript-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/typescript-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/collection-class/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/collection-class/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/filtering-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/filtering-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/macros/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/macros/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/transformation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/transformation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/api/utility-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/utility-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/examples/advanced-patterns/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/advanced-patterns/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/examples/aggregation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/aggregation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/examples/basic-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/basic-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/examples/filtering-sorting/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/filtering-sorting/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/guides/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/guides/best-practices/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/best-practices/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/guides/core-concepts/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/core-concepts/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/guides/getting-started/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/getting-started/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/guides/query-operators/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/query-operators/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/CHANGELOG/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/CHANGELOG/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/installation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/installation/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/installation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/installation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/advanced/extending-collection/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/extending-collection/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/advanced/performance/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/performance/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/advanced/typescript-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/typescript-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/collection-class/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/collection-class/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/filtering-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/filtering-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/macros/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/macros/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/transformation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/transformation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/api/utility-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/utility-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/examples/advanced-patterns/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/advanced-patterns/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/examples/aggregation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/aggregation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/examples/basic-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/basic-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/examples/filtering-sorting/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/filtering-sorting/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/guides/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/guides/best-practices/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/best-practices/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/guides/core-concepts/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/core-concepts/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/guides/getting-started/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/getting-started/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/es/guides/query-operators/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/query-operators/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/CHANGELOG/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/CHANGELOG/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/CHANGELOG/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/installation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/installation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/installation/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/installation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/advanced/extending-collection/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/extending-collection/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/extending-collection/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/advanced/performance/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/performance/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/performance/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/advanced/typescript-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/advanced/typescript-usage/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/advanced/typescript-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/collection-class/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/collection-class/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/collection-class/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/filtering-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/filtering-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/filtering-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/macros/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/macros/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/macros/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/transformation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/transformation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/transformation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/api/utility-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/api/utility-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/api/utility-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/examples/advanced-patterns/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/advanced-patterns/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/advanced-patterns/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/examples/aggregation/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/aggregation/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/aggregation/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/examples/basic-usage/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/basic-usage/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/basic-usage/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/examples/filtering-sorting/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/examples/filtering-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/examples/filtering-sorting/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/guides/aggregation-methods/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/aggregation-methods/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/aggregation-methods/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/guides/best-practices/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/best-practices/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/best-practices/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/guides/core-concepts/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/core-concepts/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/core-concepts/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/guides/getting-started/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/getting-started/"/>
+    </url>
+    <url>
+        <loc>https://arcaelas.github.io/collection/de/guides/query-operators/</loc>
+        <lastmod>2025-10-13</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="de" href="https://arcaelas.github.io/collection/de/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arcaelas.github.io/collection/guides/query-operators/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://arcaelas.github.io/collection/es/guides/query-operators/"/>
+    </url>
+</urlset>
