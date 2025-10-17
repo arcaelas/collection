@@ -54,7 +54,7 @@ export default class Collection<
     key: string,
     value: Bind<Collection, Noop<any[], any>>
   ): Collection {
-    (this.prototype ?? this["__proto__"])[key] = value.bind(
+    (this.prototype ?? (this as any)["__proto__"])[key] = value.bind(
       this as unknown as Collection
     );
     return this as unknown as Collection;
@@ -101,9 +101,9 @@ export default class Collection<
   public countBy(
     executor: (value: T, index: number, arr: T[]) => string | number
   ): Record<string, number>;
-  public countBy(iterator) {
+  public countBy(iterator: any) {
     let handler = iterator;
-    if (typeof iterator === "string") handler = (i) => get(i, iterator);
+    if (typeof iterator === "string") handler = (i: any) => get(i, iterator);
     const counts = {} as Record<string, number>;
     this.forEach((v, i, a) => {
       const key = handler(v, i, a) as string;
@@ -218,7 +218,7 @@ export default class Collection<
     }
 
     if (args.length === 3) {
-      const op = alias[second];
+      const op = alias[second as keyof typeof alias];
       if (!op) {
         throw new TypeError(
           `"${second}" no es un operador válido. Usa: ${Object.keys(alias).join(
@@ -659,7 +659,7 @@ export default class Collection<
   public sum<H extends (item: T, index: number, arr: T[]) => number>(
     iterator: H
   ): number;
-  public sum(handler) {
+  public sum(handler: any) {
     return super
       .map(
         typeof handler === "function"
@@ -762,7 +762,7 @@ export default class Collection<
   public where(...props: any[]) {
     let [key, operator, value] = props;
     value = props.length >= 3 ? value : operator;
-    operator = props.length >= 3 ? alias[operator] : "$eq";
+    operator = props.length >= 3 ? alias[operator as keyof typeof alias] : "$eq";
     if (!operator) throw new Error("Unexpected value for the search operator.");
     return this.filter({ [key]: { [operator]: value } } as any);
   }
@@ -800,7 +800,7 @@ export default class Collection<
   public whereNot(...props: any[]) {
     let [key, operator, value] = props;
     value = props.length >= 3 ? value : operator;
-    operator = props.length >= 3 ? alias[operator] : "$eq";
+    operator = props.length >= 3 ? alias[operator as keyof typeof alias] : "$eq";
     if (!operator) throw new Error("Unexpected value for the search operator.");
     return this.filter({ $not: { [key]: { [operator]: value } } } as any);
   }
