@@ -55,6 +55,9 @@
   "scripts": {
     "build": "tsc && node esbuild.js",
     "commit": "npm publish --access=public",
+    "docs:build": "mkdocs build -d docs/build",
+    "docs:serve": "mkdocs serve",
+    "docs:deploy": "mkdocs gh-deploy --force",
     "postpublish": "rm -rf build",
     "prepare": "husky",
     "prepublishOnly": "yarn test",
