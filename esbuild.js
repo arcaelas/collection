@@ -1,18 +1,22 @@
 #! ts-node
 const { join } = require("path")
-const { readdirSync } = require("fs")
+const { readdirSync, existsSync } = require("fs")
 const { build } = require("esbuild")
 
-build({
-    entryPoints: readdirSync(join(__dirname, 'test'))
-        .filter(name => name.match(/\.ts$/))
-        .map(name => join('test', name)),
-    outdir: "test",
-    bundle: true,
-    minify: true,
-    platform: "node",
-    format: "cjs",
-})
+// Build test files if test directory exists
+const testDir = join(__dirname, 'test');
+if (existsSync(testDir)) {
+    build({
+        entryPoints: readdirSync(testDir)
+            .filter(name => name.match(/\.ts$/))
+            .map(name => join('test', name)),
+        outdir: "test",
+        bundle: true,
+        minify: true,
+        platform: "node",
+        format: "cjs",
+    })
+}
 
 build({
     entryPoints: ['src/index.ts'],

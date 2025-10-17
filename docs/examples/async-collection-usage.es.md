@@ -4,10 +4,10 @@ Ejemplos del mundo real de uso de AsyncCollection con diferentes fuentes de dato
 
 ## Tabla de Contenidos
 
-- [Ejemplo Básico en Memoria](#ejemplo-básico-en-memoria)
-- [Integración con Prisma ORM](#integración-con-prisma-orm)
-- [Integración con TypeORM](#integración-con-typeorm)
-- [Integración con Sequelize](#integración-con-sequelize)
+- [Ejemplo Básico en Memoria](#ejemplo-basico-en-memoria)
+- [Integración con Prisma ORM](#integracion-con-prisma-orm)
+- [Integración con TypeORM](#integracion-con-typeorm)
+- [Integración con Sequelize](#integracion-con-sequelize)
 - [Wrapper de API REST](#wrapper-de-api-rest)
 - [Constructor de Consultas GraphQL](#constructor-de-consultas-graphql)
 - [Validadores Personalizados](#validadores-personalizados)
