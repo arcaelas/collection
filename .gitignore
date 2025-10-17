@@ -1,3 +1,11 @@
+# Compiled TypeScript
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
+# MkDocs build output
+site/
+
 # Logs
 logs
 *.log

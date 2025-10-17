@@ -26,9 +26,8 @@
     "typescript": "^5.0.4"
   },
   "files": [
-    "build/",
-    "*.md",
-    "*.json"
+    "src/**/*.js",
+    "src/**/*.d.ts"
   ],
   "homepage": "https://github.com/arcaelas/collection",
   "keywords": [
@@ -42,7 +41,8 @@
     "database"
   ],
   "license": "ISC",
-  "main": "build/index.js",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "name": "@arcaelas/collection",
   "publishConfig": {
     "access": "public",
@@ -53,12 +53,11 @@
     "url": "https://github.com/arcaelas/collection.git"
   },
   "scripts": {
-    "build": "tsc && node esbuild.js",
-    "commit": "npm publish --access=public",
-    "docs:build": "mkdocs build -d docs/build",
+    "build": "tsc",
+    "deploy": "npm publish --access=public",
+    "docs": "mkdocs gh-deploy --force",
     "docs:serve": "mkdocs serve",
-    "docs:deploy": "mkdocs gh-deploy --force",
-    "postpublish": "rm -rf build",
+    "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete",
     "prepare": "husky",
     "prepublishOnly": "yarn test",
     "test": "yarn build && jest",
