@@ -78,9 +78,11 @@ plugins:
             Core Concepts: Conceptos Básicos
             Query Operators: Operadores de Consulta
             Aggregation Methods: Métodos de Agregación
+            AsyncCollection: AsyncCollection
             Best Practices: Buenas Prácticas
             API Reference: Referencia de API
             Collection Class: Clase Collection
+            AsyncCollection Class: Clase AsyncCollection
             Filtering Methods: Métodos de Filtrado
             Transformation Methods: Métodos de Transformación
             Utility Methods: Métodos Utilitarios
@@ -89,6 +91,7 @@ plugins:
             Basic Usage: Uso Básico
             Filtering & Sorting: Filtrado y Ordenamiento
             Aggregation: Agregación
+            AsyncCollection Usage: Uso de AsyncCollection
             Advanced Patterns: Patrones Avanzados
             Advanced: Avanzado
             Performance: Rendimiento
@@ -107,9 +110,11 @@ plugins:
             Core Concepts: Grundkonzepte
             Query Operators: Abfrageoperatoren
             Aggregation Methods: Aggregationsmethoden
+            AsyncCollection: AsyncCollection
             Best Practices: Best Practices
             API Reference: API-Referenz
             Collection Class: Collection-Klasse
+            AsyncCollection Class: AsyncCollection-Klasse
             Filtering Methods: Filtermethoden
             Transformation Methods: Transformationsmethoden
             Utility Methods: Hilfsmethoden
@@ -118,6 +123,7 @@ plugins:
             Basic Usage: Grundlegende Verwendung
             Filtering & Sorting: Filtern und Sortieren
             Aggregation: Aggregation
+            AsyncCollection Usage: AsyncCollection-Verwendung
             Advanced Patterns: Erweiterte Muster
             Advanced: Erweitert
             Performance: Leistung
@@ -210,9 +216,11 @@ nav:
       - Core Concepts: guides/core-concepts.md
       - Query Operators: guides/query-operators.md
       - Aggregation Methods: guides/aggregation-methods.md
+      - AsyncCollection: guides/async-collection.md
       - Best Practices: guides/best-practices.md
   - API Reference:
       - Collection Class: api/collection-class.md
+      - AsyncCollection Class: api/async-collection-class.md
       - Filtering Methods: api/filtering-methods.md
       - Transformation Methods: api/transformation-methods.md
       - Aggregation Methods: api/aggregation-methods.md
@@ -222,6 +230,7 @@ nav:
       - Basic Usage: examples/basic-usage.md
       - Filtering & Sorting: examples/filtering-sorting.md
       - Aggregation: examples/aggregation.md
+      - AsyncCollection Usage: examples/async-collection-usage.md
       - Advanced Patterns: examples/advanced-patterns.md
   - Advanced:
       - Performance: advanced/performance.md
