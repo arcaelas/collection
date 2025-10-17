@@ -4,3 +4,21 @@
   {{ super() }}
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2819730910015409" crossorigin="anonymous"></script>
 {% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  <!-- Google AdSense - Display horizontal al final del contenido -->
+  <div style="margin: 3rem 0 2rem 0; padding: 2rem 0; border-top: 1px solid var(--md-default-fg-color--lightest);">
+    <!-- Arcaelas Collection -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2819730910015409"
+         data-ad-slot="5946645648"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+{% endblock %}
