@@ -1,6 +1,6 @@
 # Bienvenido a @arcaelas/collection
 
-<div align="center">
+<div align="center" markdown="1">
   <img src="https://raw.githubusercontent.com/arcaelas/dist/main/logo/svg/64.svg" height="64px" alt="Logo de Arcaelas">
 
   **Una potente biblioteca de colecciones TypeScript con DSL de consultas similar a MongoDB**
@@ -207,13 +207,8 @@ MIT © 2025 Arcaelas Insiders
 
 ---
 
-<div align="center">
-  <p>
-    <strong>Construido con ❤️ por el equipo de Arcaelas Insiders</strong>
-  </p>
-  <p>
-    ¿Quiere discutir alguno de nuestros proyectos de código abierto? Envíenos un mensaje en
-    <a href="https://twitter.com/arcaelas">Twitter</a> o patrocínenos en
-    <a href="https://github.com/sponsors/arcaelas">GitHub Sponsors</a>.
-  </p>
+<div align="center" markdown="1">
+  **Construido con ❤️ por el equipo de Arcaelas Insiders**
+
+  ¿Quiere discutir alguno de nuestros proyectos de código abierto? Envíenos un mensaje en [Twitter](https://twitter.com/arcaelas) o patrocínenos en [GitHub Sponsors](https://github.com/sponsors/arcaelas).
 </div>
