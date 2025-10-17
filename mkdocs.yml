@@ -1,4 +1,4 @@
-site_name: '@arcaelas/collection'
+site_name: 'Arcaelas Insiders · Collection'
 site_description: 'Collection utility library with MongoDB-like query DSL for TypeScript'
 site_author: 'Arcaelas Insiders'
 site_url: 'https://arcaelas.github.io/collection'
@@ -47,7 +47,7 @@ theme:
     - toc.follow
   icon:
     repo: fontawesome/brands/github
-    logo: material/database
+  logo: assets/logo.svg
 
 plugins:
   - search:
@@ -65,11 +65,11 @@ plugins:
           default: true
           name: English
           build: true
-          site_name: '@arcaelas/collection'
+          site_name: 'Arcaelas Insiders · Collection'
         - locale: es
           name: Español
           build: true
-          site_name: '@arcaelas/collection'
+          site_name: 'Arcaelas Insiders · Collection'
           nav_translations:
             Home: Inicio
             Installation: Instalación
@@ -101,7 +101,7 @@ plugins:
         - locale: de
           name: Deutsch
           build: true
-          site_name: '@arcaelas/collection'
+          site_name: 'Arcaelas Insiders · Collection'
           nav_translations:
             Home: Startseite
             Installation: Installation
