@@ -9,7 +9,7 @@
     "url": "https://github.com/arcaelas/collection/issues"
   },
   "dependencies": {
-    "@arcaelas/utils": "^2.0.1",
+    "@arcaelas/utils": "^2.0.8",
     "lodash": "^4.17.21"
   },
   "description": "Searching, filtering and mapping collections is the bread and butter for developers, that's why we offer you \"eloquent\".",
@@ -46,10 +46,10 @@
   },
   "scripts": {
     "build": "tsc && tsc-alias",
-    "docs": "mkdocs gh-deploy --force",
     "deploy": "npm version patch && npm publish --access=public",
-    "prepublishOnly": "yarn build",
-    "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete"
+    "docs": "mkdocs gh-deploy --force",
+    "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete",
+    "prepublishOnly": "yarn build"
   },
-  "version": "2.2.0"
+  "version": "2.5.0"
 }
