@@ -52,5 +52,5 @@
     "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete",
     "prepublishOnly": "yarn build"
   },
-  "version": "2.5.2"
+  "version": "2.5.3"
 }
