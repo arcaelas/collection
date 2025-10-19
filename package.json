@@ -14,15 +14,8 @@
   },
   "description": "Searching, filtering and mapping collections is the bread and butter for developers, that's why we offer you \"eloquent\".",
   "devDependencies": {
-    "@types/jest": "^29.5.14",
     "@types/lodash": "^4.14.194",
     "@types/node": "^24.8.1",
-    "esbuild": "^0.25.0",
-    "husky": "9.1.7",
-    "jest": "^29.7.0",
-    "redis": "^5.8.3",
-    "ts-jest": "^29.4.5",
-    "ts-node": "^10.9.2",
     "typescript": "^5.0.4"
   },
   "files": [
@@ -42,7 +35,6 @@
   ],
   "license": "ISC",
   "main": "src/index.js",
-  "types": "src/index.d.ts",
   "name": "@arcaelas/collection",
   "publishConfig": {
     "access": "public",
@@ -53,16 +45,11 @@
     "url": "https://github.com/arcaelas/collection.git"
   },
   "scripts": {
-    "build": "tsc",
-    "deploy": "npm publish --access=public",
+    "build": "tsc && tsc-alias",
     "docs": "mkdocs gh-deploy --force",
-    "docs:serve": "mkdocs serve",
-    "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete",
-    "prepare": "husky",
-    "prepublishOnly": "yarn test",
-    "test": "yarn build && jest",
-    "test:async": "npx -y tsx tests/setup/init.redis.ts && jest tests/async.redis.test.ts",
-    "test:setup": "npx -y tsx tests/setup/init.redis.ts"
+    "deploy": "npm version patch && npm publish --access=public",
+    "prepublishOnly": "yarn build",
+    "postpublish": "find src -type f \\( -name '*.js' -o -name '*.d.ts' -o -name '*.map' \\) -delete"
   },
   "version": "2.2.0"
 }
