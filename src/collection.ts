@@ -8,7 +8,6 @@ import {
   has,
   merge,
   query,
-  source,
 } from "@arcaelas/utils";
 import { Dictionary, groupBy, omit, uniqBy } from "lodash";
 
@@ -24,13 +23,10 @@ export enum alias {
   in = "$in",
   includes = "$includes",
 }
+// prettier-ignore
+export default class Collection<T = any, V extends JsonObject = JsonObject> extends Array<T> {
 
-export default class Collection<
-  T = any,
-  V extends JsonObject = JsonObject
-> extends Array<T> {
   [K: string]: any;
-
   private readonly query: ReturnType<typeof query>;
 
   constructor(items?: Collection | T | T[], validator: V = {} as any) {
@@ -50,10 +46,7 @@ export default class Collection<
    * const collection = new Eloquen([ ... ])
    * const someItem: boolean = collection.some(e=> e.age >= 18)
    */
-  static macro(
-    key: string,
-    value: Bind<Collection, Noop<any[], any>>
-  ): Collection {
+  static macro(key: string, value: Bind<Collection, Noop<any[], any>>): Collection {
     (this.prototype ?? (this as any)["__proto__"])[key] = value.bind(
       this as unknown as Collection
     );
@@ -81,7 +74,7 @@ export default class Collection<
    * @example
    * const clone = items.collect([])
    */
-  public collect<I extends T>(items?: T[]): Collection<T, V> {
+  public collect(items?: T[]): Collection<T, V> {
     const c = new Collection(items);
     Object.setPrototypeOf(c, Object.getPrototypeOf(this));
     return c as any;
@@ -97,10 +90,8 @@ export default class Collection<
    *  optionalChainedValue:1
    * }
    */
-  public countBy(key: string): Record<string, number>;
-  public countBy(
-    executor: (value: T, index: number, arr: T[]) => string | number
-  ): Record<string, number>;
+  public countBy<K extends keyof T>(key: K): Record<string, number>;
+  public countBy(executor: (value: T, index: number, arr: T[]) => string | number): Record<string, number>;
   public countBy(iterator: any) {
     let handler = iterator;
     if (typeof iterator === "string") handler = (i: any) => get(i, iterator);
@@ -111,15 +102,6 @@ export default class Collection<
       counts[key] += 1;
     });
     return counts;
-  }
-
-  /**
-   * @description
-   * Print collection and exit.
-   */
-  public dd() {
-    this.dump();
-    if (typeof process !== "undefined") process.exit(1);
   }
 
   /**
@@ -137,6 +119,15 @@ export default class Collection<
     super.splice(0, length);
     super.push(...items);
     return length - this.length;
+  }
+
+  /**
+   * @description
+   * Print collection and exit.
+   */
+  public dd() {
+    this.dump();
+    if (typeof process !== "undefined") process.exit(1);
   }
 
   /**
@@ -187,48 +178,25 @@ export default class Collection<
    *  return item.stock > 0  // Check if all items have "stock" property > 0
    * })
    */
-  public override every<S extends T>(
-    predicate: (value: T, index: number, array: T[]) => value is S,
-    thisArg?: any
-  ): this is S[];
-  public override every(
-    predicate: (value: T, index: number, array: T[]) => unknown,
-    thisArg?: any
-  ): boolean;
+  public override every<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): this is S[];
+  public override every(predicate: (value: T, index: number, array: T[]) => unknown,thisArg?: any): boolean;
   public override every(...args: any[]): boolean {
     const [first, second, third] = args;
-
     if (typeof first === "function") {
-      // Firma nativa de Array.every (predicado)
       return super.every(first, second);
-    }
-
-    if (args.length === 1) {
+    } else if (args.length === 1) {
       if (typeof first === "string") {
         return super.every((item) => has(item as any, first));
-      }
-
-      if (typeof first === "object") {
+      } else if (typeof first === "object") {
         return this.filter(first).length === this.length;
       }
-    }
-
-    if (args.length === 2) {
+    } else if (args.length === 2) {
       return super.every((item) => get(item as any, first) === second);
-    }
-
-    if (args.length === 3) {
+    } else if (args.length === 3) {
       const op = alias[second as keyof typeof alias];
-      if (!op) {
-        throw new TypeError(
-          `"${second}" no es un operador válido. Usa: ${Object.keys(alias).join(
-            ", "
-          )}`
-        );
-      }
+      if (!op) throw new TypeError(`"${second}" no es un operador válido. Usa: ${Object.keys(alias).join( ", " )}`);
       return super.every(this.query({ [first]: { [op]: third } } as any));
     }
-
     throw new Error(`every(): argumentos inválidos.`);
   }
 
@@ -262,17 +230,11 @@ export default class Collection<
    * });
    */
   public filter(query: Query<V>): Collection<T, V>;
-  public filter(
-    iterator: (item: T, index: number, arr: T[]) => boolean
-  ): Collection<T, V>;
+  public filter(iterator: (item: T, index: number, arr: T[]) => boolean): Collection<T, V>;
   public filter(handler: any) {
     return this.collect(
       super.filter(
-        typeof handler === "function"
-          ? handler
-          : typeof (handler ?? 0) === "object"
-          ? this.query(handler)
-          : () => false
+        typeof handler === "function" ? handler : typeof (handler ?? 0) === "object" ? this.query(handler) : () => false
       )
     );
   }
@@ -291,18 +253,10 @@ export default class Collection<
    */
   public first(): T | undefined;
   public first(query: Query<V>): T | undefined;
-  public first(
-    iterator: (item: T, index: number, arr: T[]) => boolean
-  ): T | undefined;
+  public first(iterator: (item: T, index: number, arr: T[]) => boolean): T | undefined;
   public first(handler?: any) {
     return super.find(
-      handler === undefined
-        ? () => true
-        : typeof handler === "function"
-        ? handler
-        : typeof (handler ?? 0) === "object"
-        ? this.query(handler)
-        : () => false
+      handler === undefined ? () => true : typeof handler === "function" ? handler : typeof (handler ?? 0) === "object" ? this.query(handler) : () => false
     );
   }
 
@@ -323,10 +277,8 @@ export default class Collection<
    * //   name: 'Arcaelas Insiders',
    * // }
    */
-  public forget(...keys: string[] | string[][]): this {
-    const items = super.map((item) =>
-      omit(item as JsonObject, ...keys)
-    ) as any[];
+  public forget<K extends keyof V>(...keys: K[]): this {
+    const items = super.map((item) => omit(item as JsonObject, ...keys)) as any[];
     super.splice(0, this.length);
     super.push(...items);
     return this;
@@ -436,10 +388,8 @@ export default class Collection<
    * // }
    *
    */
-  public groupBy(key: string): Dictionary<T[]>;
-  public groupBy(
-    iterator: (item: T, index: number, arr: T[]) => string | number
-  ): Dictionary<T[]>;
+  public groupBy<K extends keyof T>(key: K): Dictionary<T[]>;
+  public groupBy(iterator: (item: T, index: number, arr: T[]) => string | number): Dictionary<T[]>;
   public groupBy(handler: any) {
     return groupBy<T>(this, handler);
   }
@@ -454,19 +404,11 @@ export default class Collection<
    */
   public last(): T | undefined;
   public last(query: Query<V>): T | undefined;
-  public last(
-    iterator: (item: T, index: number, arr: T[]) => boolean
-  ): T | undefined;
+  public last(iterator: (item: T, index: number, arr: T[]) => boolean): T | undefined;
   public last(handler?: any) {
-    return this.findLast(
-      handler === undefined
-        ? () => true
-        : typeof handler === "function"
-        ? handler
-        : typeof (handler ?? 0) === "object"
-        ? this.query(handler)
-        : () => false
-    );
+    return super.concat().reverse().find(
+      handler === undefined ? () => true : typeof handler === "function" ? handler : typeof (handler ?? 0) === "object" ? this.query(handler) : () => false
+    )
   }
 
   /**
@@ -496,9 +438,14 @@ export default class Collection<
    *
    * const max = collection.max('value'); // 12
    */
-  public max(key: string): number {
+  public max<K extends keyof T>(key: K): T[K] {
     if (typeof key !== "string") throw new Error("type/string");
-    return Math.max(...super.map((item) => get(item as JsonObject, key, 0)));
+    let v;
+    for (const item of this) {
+      const c = get(item as JsonObject, key, undefined) as any;
+      v = v === undefined || c > v ? c : v;
+    }
+    return v;
   }
 
   /**
@@ -514,56 +461,14 @@ export default class Collection<
    *
    * const max = collection.min('value'); // -13
    */
-  public min(key: string): number {
+  public min<K extends keyof T>(key: K): T[K] {
     if (typeof key !== "string") throw new Error("type/string");
-    return Math.min(...super.map((item) => get(item as JsonObject, key, 0)));
-  }
-
-  /**
-   * @description Filter the elements of the collection using Functions and Queries, some of the examples could be:
-   * NOTE: It is important to use double "$" ($$) to refer to a property based query.
-   * @example
-   * // all items with 17 or minor
-   * collection.not(item=>{
-   *  return item.age >= 18;
-   * });
-   * // or
-   * collection.not({
-   *  age:{ $gte: 18 }
-   * });
-   *
-   * @example
-   * collection.not({
-   *  name: /Alejandro/,
-   *  gender:{
-   *      $not:{
-   *          $in: ['animal','fruit']
-   *      },
-   *  },
-   *  skills:{
-   *      $contains: "Liberty"
-   *  },
-   *  work:{
-   *      $not:{
-   *          $in: ["work", "without", "coffe"]
-   *      }
-   *  }
-   * });
-   */
-  public not(query: Query<V>): Collection<T, V>;
-  public not(
-    iterator: (item: T, index: number, arr: T[]) => boolean
-  ): Collection<T, V>;
-  public not(handler: any) {
-    return this.collect(
-      super.filter(
-        typeof handler === "function"
-          ? (...a) => !handler(...a)
-          : typeof (handler ?? 0) === "object"
-          ? this.query({ $not: handler })
-          : () => false
-      )
-    );
+    let v;
+    for (const item of this) {
+      const c = get(item as JsonObject, key, undefined) as any;
+      v = v === undefined || c < v ? c : v;
+    }
+    return v;
   }
 
   /**
@@ -578,10 +483,7 @@ export default class Collection<
    *  next: 2 // Number of next page
    * }
    */
-  public paginate(
-    page: number = 1,
-    perPage: number = 20
-  ): { items: T[]; prev: number | false; next: number | false } {
+  public paginate(page: number = 1, perPage: number = 20): { items: T[]; prev: number | false; next: number | false } {
     return {
       items: super.slice((page - 1) * perPage, perPage * page),
       prev: page <= 1 ? false : page - 1,
@@ -613,25 +515,17 @@ export default class Collection<
    * @description
    * Sort the elements of the collection (This method mutates the collection).
    */
-  public sort(key?: string): this;
-  public sort(key: string, direction: "asc" | "desc"): this;
+  public sort(): this;
+  public sort<K extends keyof T>(key: K, direction?: "asc" | "desc"): this;
   public sort(compareFn: (a: T, b: T) => number): this;
   public sort(...args: any[]) {
     const [handler, ...dir] = args;
     return super.sort(
-      typeof handler === "function"
-        ? handler
-        : (current: any, next: any) => {
-            next = get(next as JsonObject, handler, undefined) as any;
-            current = get(current as JsonObject, handler, undefined) as any;
-            return current === undefined
-              ? 0
-              : next === undefined
-              ? dir[0] === "asc"
-                ? 1
-                : -1
-              : (current > next ? 1 : -1) * (dir[0] === "asc" ? 1 : -1);
-          }
+      typeof handler === "function" ? handler : (current: any, next: any) => {
+        next = get(next as JsonObject, handler, undefined) as any;
+        current = get(current as JsonObject, handler, undefined) as any;
+        return current === undefined ? 0 : next === undefined ? dir[0] === "asc" ? 1 : -1 : (current > next ? 1 : -1) * (dir[0] === "asc" ? 1 : -1);
+      }
     );
   }
 
@@ -641,10 +535,7 @@ export default class Collection<
    * @param replacer A function that transforms the results.
    * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
    */
-  public stringify(
-    replacer?: (this: any, key: string, value: any) => any,
-    space?: string | number
-  ): string;
+  public stringify(replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
   public stringify(...args: any[]) {
     return JSON.stringify(this, ...args);
   }
@@ -655,19 +546,12 @@ export default class Collection<
    * collection.sum("price");
    * collection.sum(item=> item.price * 0.16);
    */
-  public sum(key: string): number;
-  public sum<H extends (item: T, index: number, arr: T[]) => number>(
-    iterator: H
-  ): number;
+  public sum<K extends keyof T>(key: K): number;
+  public sum<H extends (item: T, index: number, arr: T[]) => number>(iterator: H): number;
   public sum(handler: any) {
-    return super
-      .map(
-        typeof handler === "function"
-          ? handler
-          : (item) => get(item as JsonObject, handler)
-      )
-      .filter((e: any) => !isNaN(e))
-      .reduce((a, b: any) => a + b, 0);
+    return super.map(
+      typeof handler === "function" ? handler : (item) => get(item as JsonObject, handler)
+    ).filter((e: any) => !isNaN(e)).reduce((a, b: any) => a + b, 0);
   }
 
   /**
@@ -689,10 +573,8 @@ export default class Collection<
    * //   { name: 'Galaxy S6', brand: 'Samsung', type: 'phone' },
    * // ]
    */
-  public unique(key: string): Collection<T, V>;
-  public unique(
-    iterator: (item: T, index: number, arr: V[]) => any
-  ): Collection<T, V>;
+  public unique<K extends keyof T>(key: K): Collection<T, V>;
+  public unique(iterator: (item: T, index: number, arr: V[]) => any): Collection<T, V>;
   public unique(handler: any) {
     return this.collect(uniqBy(this, handler));
   }
@@ -718,15 +600,17 @@ export default class Collection<
   public update(set: T): number;
   public update(where: Query<V>, set: T): number;
   public update(...args: any[]) {
-    let count = 0,
-      set = source(args.length === 1 ? args[0] : args[1]),
-      where = args.length === 1 ? () => true : this.query(args[0]);
-    const items = super.map((item) =>
-      where(item) ? merge(item, set(item as JsonObject), count++) : item
-    );
-    super.splice(0, this.length);
-    super.push(...items);
-    return count;
+    let count: number = 0;
+    const set = args.length === 1 ? args[0] : args[1];
+    const handler = args.length === 1 ? (()=> true) : this.query(args[0]);
+    super.map(item=> {
+      if(handler(item)){
+        count++;
+        merge(item, set as any)
+      }
+      return item
+    })
+    return count
   }
 
   /**
@@ -753,12 +637,8 @@ export default class Collection<
    * @example
    * collection.where('price', '>=', 100);
    */
-  public where(key: string, value: Inmutables): Collection<T, V>;
-  public where(
-    key: string,
-    operator: Operator,
-    value: Inmutables
-  ): Collection<T, V>;
+  public where<K extends keyof T>(key: K, value: Inmutables): Collection<T, V>;
+  public where<K extends keyof T>(key: K, operator: Operator, value: Inmutables): Collection<T, V>;
   public where(...props: any[]) {
     let [key, operator, value] = props;
     value = props.length >= 3 ? value : operator;
@@ -791,12 +671,8 @@ export default class Collection<
    * @example
    * collection.whereNot('price', '>=', 100);
    */
-  public whereNot(key: string, value: Inmutables): Collection<T, V>;
-  public whereNot(
-    key: string,
-    operator: Operator,
-    value: Inmutables
-  ): Collection<T, V>;
+  public whereNot<K extends keyof T>(key: K, value: Inmutables): Collection<T, V>;
+  public whereNot<K extends keyof T>(key: K, operator: Operator, value: Inmutables): Collection<T, V>;
   public whereNot(...props: any[]) {
     let [key, operator, value] = props;
     value = props.length >= 3 ? value : operator;
