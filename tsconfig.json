@@ -1,30 +1,42 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
     "target": "ES2022",
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"],
-      "@type/*": ["src/@types/*"]
+      "~/*": [
+        "src/*"
+      ],
+      "@type/*": [
+        "src/@types/*"
+      ]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "outDir": "./src",
+    "outDir": "./build",
     "declaration": true,
     "sourceMap": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
-    "lib": ["ES2022", "DOM"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "rootDir": "./src"
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
